@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark;
+}
+
+/* Brand: kmnpoorg.minasatech.com — primary #043464, accent #8ac1e2, cyan #24b0d8, teal #4b99aa */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-base-100: #ffffff;
+  --color-base-content: #1e293b;
+  --color-primary: #043464;
+  --color-primary-content: #ffffff;
+  --color-secondary: #8ac1e2;
+  --color-secondary-content: #043464;
+  --color-accent: #24b0d8;
+  --color-accent-content: #ffffff;
+  --color-info: #4b99aa;
+  --color-info-content: #ffffff;
+  --menu-active-bg: #043464;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-base-100: #0f172a;
+  --color-base-content: white;
+  --color-primary: #043464;
+  --color-primary-content: #ffffff;
+  --color-secondary: #8ac1e2;
+  --color-secondary-content: #043464;
+  --color-accent: #24b0d8;
+  --color-accent-content: #ffffff;
+  --color-info: #4b99aa;
+  --color-info-content: #ffffff;
+}
+
+@theme {
+  --font-tajawal: "Tajawal", sans-serif;
+  --font-sans: "Cairo", "Tajawal", sans-serif;
+}
+
+@layer utilities {
+  .container {
+    @apply mx-auto w-full px-4 sm:px-5 md:px-6 lg:px-0 xl:px-8;
+  }
+
+  .center {
+    @apply flex justify-center items-center;
+  }
+  section {
+    @apply py-8 sm:py-14;
+  }
+
+  /* Active tab styling */
+  .tabs input:checked {
+    @apply text-primary;
+  }
+
+  /* Footer backdrop built from the brand palette (primary → info → accent) */
+  .footer-gradient {
+    background-color: var(--color-primary);
+    background-image:
+      radial-gradient(
+        115% 115% at 15% 105%,
+        color-mix(in oklab, var(--color-accent) 70%, transparent) 0%,
+        transparent 62%
+      ),
+      radial-gradient(
+        85% 85% at 95% 0%,
+        color-mix(in oklab, var(--color-info) 40%, transparent) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        125deg,
+        #021a33 0%,
+        var(--color-primary) 45%,
+        #06456c 100%
+      );
+  }
+}
