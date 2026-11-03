@@ -103,7 +103,7 @@ const FooterLink = ({ children }) => (
   <li>
     <a
       href="#"
-      className="inline-block text-base text-white/75 transition-colors duration-200 hover:text-secondary focus-visible:text-secondary focus-visible:outline-none"
+      className="inline-block text-base text-white/75 transition-colors duration-200 hover:text-amber-light focus-visible:text-amber-light focus-visible:outline-none"
     >
       {children}
     </a>
@@ -132,12 +132,12 @@ const Footer = () => {
                     type="email"
                     required
                     placeholder="ادخل عنوان بريدك الإلكتروني"
-                    className="h-14 w-full rounded-full bg-white ps-6 pe-16 text-base text-primary placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/40"
+                    className="h-14 w-full rounded-full bg-white ps-6 pe-16 text-base text-secondary placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
                   />
                   <button
                     type="submit"
                     aria-label="اشترك في النشرة الإخبارية"
-                    className="btn btn-circle btn-secondary absolute end-2 top-1/2 -translate-y-1/2 border-none text-primary transition-colors duration-200 hover:bg-primary hover:text-primary-content"
+                    className="btn btn-circle btn-primary absolute end-2 top-1/2 -translate-y-1/2 border-none"
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -155,13 +155,13 @@ const Footer = () => {
                 </div>
               </form>
 
-              <p className="mt-3 text-xs leading-relaxed text-white/55">
+              <p className="mt-3 text-xs leading-relaxed text-white/75">
                 هذا الموقع محمي بواسطة reCAPTCHA وتطبق{" "}
-                <a href="#" className="text-secondary/90 underline underline-offset-2 hover:text-white">
+                <a href="#" className="text-amber-light underline underline-offset-2 hover:text-white">
                   سياسة الخصوصية
                 </a>{" "}
                 و
-                <a href="#" className="text-secondary/90 underline underline-offset-2 hover:text-white">
+                <a href="#" className="text-amber-light underline underline-offset-2 hover:text-white">
                   شروط الخدمة
                 </a>{" "}
                 من موقع Google
@@ -176,7 +176,7 @@ const Footer = () => {
                     <a
                       href="#"
                       aria-label={social.name}
-                      className="center size-11 rounded-full text-white/80 transition-colors duration-200 hover:bg-white/10 hover:text-secondary focus-visible:bg-white/10 focus-visible:text-secondary focus-visible:outline-none"
+                      className="center size-11 rounded-full text-white/80 transition-colors duration-200 hover:bg-white/10 hover:text-amber-light focus-visible:bg-white/10 focus-visible:text-amber-light focus-visible:outline-none"
                     >
                       <svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">
                         {social.icon}
@@ -190,18 +190,18 @@ const Footer = () => {
             <div>
               <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                 <h3 className="text-lg font-bold sm:text-xl">معلومات الدخول</h3>
-                <p className="text-sm text-white/60">أوقات الزيارة لمركز إثراء هي كالتالي:</p>
+                <p className="text-sm text-white/75">أوقات الزيارة لمركز إثراء هي كالتالي:</p>
               </div>
 
               <dl className="max-w-md space-y-3">
                 {openingHours.map(({ day, time, closed }) => (
                   <div key={day} className="flex items-center justify-between gap-4">
-                    <dt className="text-sm text-white/65">{day}</dt>
+                    <dt className="text-sm text-white/75">{day}</dt>
                     <dd
                       className={
                         closed
-                          ? "text-sm text-white/40"
-                          : "text-sm font-semibold text-secondary"
+                          ? "text-sm text-white/75"
+                          : "text-sm font-semibold text-amber-light"
                       }
                     >
                       {time}
@@ -210,14 +210,14 @@ const Footer = () => {
                 ))}
               </dl>
 
-              <p className="mt-4 max-w-md text-xs leading-relaxed text-white/50">
+              <p className="mt-4 max-w-md text-xs leading-relaxed text-white/75">
                 ملاحظة: تغلق أبواب متحف الطفل ومعرض الطاقة قبل موعد إغلاق المركز بساعتين.
               </p>
             </div>
 
             <div>
               <h3 className="mb-5 text-lg font-bold sm:text-xl">الموقع</h3>
-              <address className="text-sm not-italic leading-relaxed text-white/70 sm:text-base">
+              <address className="text-sm not-italic leading-relaxed text-white/80 sm:text-base">
                 8386 الطريق الدائري، غرب الظهران
                 <br />
                 34461 الظهران
@@ -228,12 +228,12 @@ const Footer = () => {
               <h3 className="mb-5 text-lg font-bold sm:text-xl">معلومات الاتصال</h3>
               <dl className="space-y-4 text-sm sm:text-base">
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/60">هاتف:</dt>
+                  <dt className="text-white/75">هاتف:</dt>
                   <dd>
                     <a
                       href="tel:+9661338169799"
                       dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       +9661338169799
                     </a>
@@ -241,12 +241,12 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/60">الرقم المجاني و الواتساب:</dt>
+                  <dt className="text-white/75">الرقم المجاني و الواتساب:</dt>
                   <dd>
                     <a
                       href="tel:8001221224"
                       dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       8001221224
                     </a>
@@ -254,12 +254,12 @@ const Footer = () => {
                 </div>
 
                 <div>
-                  <dt className="mb-1 text-white/60">خدمة العملاء:</dt>
+                  <dt className="mb-1 text-white/75">خدمة العملاء:</dt>
                   <dd>
                     <a
                       href="mailto:customercare@ithra.com"
                       dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       customercare@ithra.com
                     </a>
@@ -267,12 +267,12 @@ const Footer = () => {
                 </div>
 
                 <div>
-                  <dt className="mb-1 text-white/60">المركز الإعلامي:</dt>
+                  <dt className="mb-1 text-white/75">المركز الإعلامي:</dt>
                   <dd>
                     <a
                       href="mailto:media@ithra.com"
                       dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       media@ithra.com
                     </a>
@@ -280,12 +280,12 @@ const Footer = () => {
                 </div>
 
                 <div>
-                  <dt className="mb-1 text-white/60">للشراكات والتعاون:</dt>
+                  <dt className="mb-1 text-white/75">للشراكات والتعاون:</dt>
                   <dd>
                     <a
                       href="mailto:relations@ithra.com"
                       dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       relations@ithra.com
                     </a>
@@ -293,13 +293,13 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/60">مواقع أخرى:</dt>
+                  <dt className="text-white/75">مواقع أخرى:</dt>
                   <dd>
                     <a
                       href="https://www.aramco.com"
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-block text-white/85 transition-colors hover:text-secondary"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
                       Aramco
                     </a>
@@ -353,13 +353,13 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/50 sm:flex-row">
+        <div className="container flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/75 sm:flex-row">
           <p>© {currentYear} مركز إثراء. جميع الحقوق محفوظة.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="transition-colors hover:text-secondary">
+            <a href="#" className="transition-colors hover:text-amber-light">
               سياسة الخصوصية
             </a>
-            <a href="#" className="transition-colors hover:text-secondary">
+            <a href="#" className="transition-colors hover:text-amber-light">
               الشروط والأحكام
             </a>
           </div>

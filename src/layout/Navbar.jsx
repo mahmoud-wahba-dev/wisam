@@ -110,8 +110,8 @@ const Navbar = () => {
               <button
                 key={item}
                 type="button"
-                className={`flex items-center px-4 py-2 text-lg font-bold text-white underline-offset-8 transition-colors hover:text-secondary max-sm:text-primary ${
-                  openMenu === item ? "underline decoration-secondary decoration-2" : ""
+                className={`flex items-center px-4 py-2 text-lg font-bold text-white underline-offset-8 transition-colors hover:text-primary max-sm:text-primary ${
+                  openMenu === item ? "underline decoration-primary decoration-2" : ""
                 }`}
                 onClick={() => toggleMenu(item)}
                 aria-expanded={openMenu === item}
@@ -134,7 +134,7 @@ const Navbar = () => {
           <button
             type="button"
             aria-label="إغلاق القائمة"
-            className="fixed inset-0 z-40 cursor-default bg-primary/80 backdrop-blur-sm"
+            className="fixed inset-0 z-40 cursor-default bg-secondary/80 backdrop-blur-sm"
             onClick={() => setOpenMenu(null)}
           />
 
@@ -155,7 +155,7 @@ const Navbar = () => {
                         <a
                           href="#"
                           onClick={() => setOpenMenu(null)}
-                          className="text-base text-white/80 transition-colors hover:text-secondary sm:text-lg"
+                          className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
                         >
                           {link}
                         </a>

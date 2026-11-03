@@ -15,7 +15,7 @@ const slides = [
     href: "https://www.ithra.com/ar/special-programs/stem-racing-ksa/stem-racing-registration-2027",
     image:
       "https://www.ithra.com/application/files/cache/thumbnails/ee28d3bea2ddef4f09130ae778ae5220.jpg",
-    overlay: "from-primary/95 via-primary/40",
+    overlay: "from-secondary/95 via-secondary/40",
   },
   {
     title: "اكتشف الآن!",
@@ -87,7 +87,7 @@ const Hero = () => {
   };
 
   return (
-    <header className="relative isolate min-h-screen overflow-hidden bg-primary text-white">
+    <header className="relative isolate min-h-screen overflow-hidden bg-secondary text-white">
       <video
         autoPlay
         muted
@@ -101,8 +101,8 @@ const Hero = () => {
       />
 
       {/* Bottom-half overlay + side scrim, as in the original banner */}
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-primary via-primary/60 to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-primary/80 via-primary/25 to-primary/10" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-secondary/80 via-secondary/25 to-secondary/10" />
 
       <div className="container relative z-10 flex min-h-screen flex-col justify-end pb-10 pt-36 sm:pt-44 lg:pb-16">
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
@@ -125,12 +125,12 @@ const Hero = () => {
                 id="hero-search"
                 type="search"
                 placeholder="ابحث عن المعارض والبرامج والفعاليات والعروض..."
-                className="h-14 w-full rounded-full border-0 bg-white ps-12 pe-6 text-base text-primary shadow-xl placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/40"
+                className="h-14 w-full rounded-full border-0 bg-white ps-12 pe-6 text-base text-secondary shadow-xl placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
               />
               <button
                 type="submit"
                 aria-label="بحث"
-                className="absolute start-3 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full text-primary/70 transition-colors hover:bg-primary/5 hover:text-primary"
+                className="absolute start-3 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full text-secondary/70 transition-colors hover:bg-secondary/5 hover:text-secondary"
               >
                 <SearchIcon />
               </button>
@@ -139,7 +139,7 @@ const Hero = () => {
             <div className="mt-6">
               <a
                 href="#program"
-                className="btn btn-secondary h-14 rounded-full px-7 text-base font-bold"
+                className="btn btn-primary h-14 rounded-full px-7 text-base font-bold"
               >
                 اكتشف البرامج
                 <ChevronDownIcon />
@@ -174,7 +174,7 @@ const Hero = () => {
                     href={href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-primary"
+                    className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-secondary"
                   >
                     <img
                       src={image}

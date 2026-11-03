@@ -100,7 +100,7 @@ const Marafeqna = () => {
   const [activeIndex, setActiveIndex] = useState(DEFAULT_ACTIVE);
 
   return (
-    <section className="relative isolate flex min-h-screen items-center overflow-hidden bg-primary py-20 text-white lg:py-24">
+    <section className="relative isolate flex min-h-screen items-center overflow-hidden bg-secondary py-20 text-white lg:py-24">
       {/* Cross-fading facility backdrop */}
       <div className="absolute inset-0 -z-20">
         {facilities.map((facility, index) => (
@@ -118,9 +118,9 @@ const Marafeqna = () => {
       </div>
 
       {/* Brand-tinted overlays */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-primary/95 via-primary/70 to-primary/35" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-primary/80 via-primary/10 to-primary/40" />
-      <div className="absolute inset-0 -z-10 bg-info/10" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-secondary/95 via-secondary/70 to-secondary/35" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-secondary/80 via-secondary/10 to-secondary/40" />
+      <div className="absolute inset-0 -z-10 bg-accent/10" />
 
       <div className="container relative z-10 flex justify-start">
         <div>
@@ -141,9 +141,9 @@ const Marafeqna = () => {
                   onClick={() => setActiveIndex(index)}
                   className={`flex size-24 flex-col items-center justify-center gap-2 rounded-3xl border-2 p-2 text-center transition-all duration-300 sm:size-28 sm:gap-3 xl:size-32 ${
                     isActive
-                      ? "scale-105 border-white bg-accent text-white shadow-2xl shadow-accent/40"
+                      ? "scale-105 border-white bg-primary text-primary-content shadow-2xl shadow-primary/40"
                       : "border-white/80 bg-white/10 text-white backdrop-blur-md hover:scale-105 hover:bg-white/20"
-                  } focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/60`}
+                  } focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/60`}
                 >
                   <Icon className="size-7 sm:size-8" strokeWidth={1.5} aria-hidden="true" />
                   <span className="text-xs font-bold leading-tight sm:text-sm xl:text-base">

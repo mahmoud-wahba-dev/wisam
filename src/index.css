@@ -1,45 +1,122 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
 @plugin "daisyui" {
-  themes:
-    light --default,
-    dark;
+  themes: false;
 }
 
-/* Brand: kmnpoorg.minasatech.com — primary #043464, accent #8ac1e2, cyan #24b0d8, teal #4b99aa */
+/* ==========================================================================
+   Brand palette
+   Orange #E1892F · Navy #063441 · Teal #357382
+
+   daisyUI derives every variant from these variables, so `btn-primary`,
+   `bg-secondary`, `text-accent`, `badge-*`, `input-*`, `tabs`, etc. all
+   follow automatically. Never hard-code the hex values in components.
+   ========================================================================== */
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
+
   --color-base-100: #ffffff;
-  --color-base-content: #1e293b;
-  --color-primary: #043464;
-  --color-primary-content: #ffffff;
-  --color-secondary: #8ac1e2;
-  --color-secondary-content: #043464;
-  --color-accent: #24b0d8;
+  --color-base-200: #f4f7f8;
+  --color-base-300: #dde5e7;
+  --color-base-content: #0e2d38;
+
+  /* Brand orange — calls to action */
+  --color-primary: #e1892f;
+  --color-primary-content: #063441;
+
+  /* Brand navy — dark surfaces, headers, hero shell */
+  --color-secondary: #063441;
+  --color-secondary-content: #ffffff;
+
+  /* Brand teal — supporting accents */
+  --color-accent: #357382;
   --color-accent-content: #ffffff;
-  --color-info: #4b99aa;
+
+  --color-neutral: #063441;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #357382;
   --color-info-content: #ffffff;
-  --menu-active-bg: #043464;
+  --color-success: #357382;
+  --color-success-content: #ffffff;
+  --color-warning: #e1892f;
+  --color-warning-content: #063441;
+  --color-error: #b4341f;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.5rem;
+
+  --menu-active-bg: #e1892f;
 }
 
 @plugin "daisyui/theme" {
   name: "dark";
-  --color-base-100: #0f172a;
-  --color-base-content: white;
-  --color-primary: #043464;
-  --color-primary-content: #ffffff;
-  --color-secondary: #8ac1e2;
-  --color-secondary-content: #043464;
-  --color-accent: #24b0d8;
+
+  --color-base-100: #04252f;
+  --color-base-200: #063441;
+  --color-base-300: #0d4a5a;
+  --color-base-content: #e8f0f2;
+
+  --color-primary: #e1892f;
+  --color-primary-content: #063441;
+
+  --color-secondary: #063441;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #357382;
   --color-accent-content: #ffffff;
-  --color-info: #4b99aa;
+
+  --color-neutral: #063441;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #357382;
   --color-info-content: #ffffff;
+  --color-success: #357382;
+  --color-success-content: #ffffff;
+  --color-warning: #e1892f;
+  --color-warning-content: #063441;
+  --color-error: #b4341f;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.5rem;
+
+  --menu-active-bg: #e1892f;
 }
 
+/* ==========================================================================
+   Fonts — FF Shamel Family Sans One (Book 400 / Bold 700)
+   Both files report usWeightClass 400 internally, so the weight has to be
+   declared explicitly here or bold text falls back to the Book face.
+   The typeface covers Arabic only: no Latin letters, no Arabic punctuation
+   (، ؛ ؟) — those come from the fallback in --font-sans.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Shamel Sans One";
+  src: url("./assets/fonts/shamel-sans-one-book.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 @theme {
-  --font-tajawal: "Tajawal", sans-serif;
-  --font-sans: "Cairo", "Tajawal", sans-serif;
+  --color-navy: #063441;
+  --color-teal: #357382;
+  --color-amber: #e1892f;
+  /* Lighter tint used for text on navy surfaces — #e1892f only reaches
+     4.96:1 on pure navy and drops below AA as soon as a gradient glow
+     sits behind it. */
+  --color-amber-light: #f0b070;
+
+  --font-sans: "Shamel Sans One", sans-serif;
 }
 
 @layer utilities {
@@ -59,25 +136,25 @@
     @apply text-primary;
   }
 
-  /* Footer backdrop built from the brand palette (primary → info → accent) */
+  /* Footer backdrop built from the brand palette (navy → teal → orange) */
   .footer-gradient {
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     background-image:
       radial-gradient(
         115% 115% at 15% 105%,
-        color-mix(in oklab, var(--color-accent) 70%, transparent) 0%,
+        color-mix(in oklab, var(--color-primary) 18%, transparent) 0%,
         transparent 62%
       ),
       radial-gradient(
         85% 85% at 95% 0%,
-        color-mix(in oklab, var(--color-info) 40%, transparent) 0%,
+        color-mix(in oklab, var(--color-accent) 22%, transparent) 0%,
         transparent 55%
       ),
       linear-gradient(
         125deg,
-        #021a33 0%,
-        var(--color-primary) 45%,
-        #06456c 100%
+        #04252f 0%,
+        var(--color-secondary) 55%,
+        #0d4a5a 100%
       );
   }
 }
