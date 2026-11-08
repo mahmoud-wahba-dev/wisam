@@ -114,7 +114,7 @@ const currentYear = new Date().getFullYear();
 
 const Footer = () => {
   return (
-    <footer dir="rtl" className="footer-gradient relative mt-20 text-white">
+    <footer className="footer-gradient relative  text-white">
       <div className="container py-16 lg:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-14 xl:gap-24">
           {/* النشرة الإخبارية + التواصل + أوقات الزيارة */}

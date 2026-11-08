@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import logo from "@/assets/imgs/logo-nav.webp";
+import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
 
 const navlinks = [
@@ -80,16 +80,16 @@ const Navbar = () => {
   }, [openMenu]);
 
   return (
-    <div className="navbar gap-7 absolute top-4 left-0 z-50 w-full">
+    <div className="navbar gap-7 absolute top-0 left-0 z-50 w-full">
       <div className="relative z-50">
-        <a className="btn btn-ghost text-xl" onClick={() => setOpenMenu(null)}>
-          <img src={logo} alt="إثراء" className="h-20 max-h-full sm:h-24 lg:h-28" />
+        <a className="btn btn-link text-xl" onClick={() => setOpenMenu(null)}>
+          <img src={logo} alt="إثراء" className="max-h-20 " />
         </a>
       </div>
 
       <div className="hidden lg:block lg:w-1/3" aria-hidden="true" />
 
-      <div className="relative z-50 flex-1">
+      <div className="relative z-50 flex-1 flex-nowrap">
         <ul className="menu menu-horizontal px-1">
           <button
             type="button"
@@ -110,7 +110,7 @@ const Navbar = () => {
               <button
                 key={item}
                 type="button"
-                className={`flex items-center px-4 py-2 text-lg font-bold text-white underline-offset-8 transition-colors hover:text-primary max-sm:text-primary ${
+                className={`flex items-center whitespace-nowrap px-4 py-2 text-base font-bold text-white underline-offset-8 transition-colors hover:text-primary max-sm:text-primary ${
                   openMenu === item ? "underline decoration-primary decoration-2" : ""
                 }`}
                 onClick={() => toggleMenu(item)}

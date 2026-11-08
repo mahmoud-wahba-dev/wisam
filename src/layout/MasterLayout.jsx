@@ -4,13 +4,13 @@ import Navbar from "./Navbar";
 
 const MasterLayout = () => {
   return (
-    <div>
+    <>
       <Navbar />
-     <main className="min-h-[70vh]">
-       <Outlet />
-     </main>
+      <main className="min-h-[70vh]">
+        <Outlet />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

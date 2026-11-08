@@ -136,7 +136,8 @@
     @apply text-primary;
   }
 
-  /* Footer backdrop built from the brand palette (navy → teal → orange) */
+  /* Brand backdrop: navy → teal with warm/cool glows, built from the palette */
+  .brand-gradient,
   .footer-gradient {
     background-color: var(--color-secondary);
     background-image:
@@ -156,5 +157,49 @@
         var(--color-secondary) 55%,
         #0d4a5a 100%
       );
+  }
+}
+
+/* ==========================================================================
+   Swiper — brand theming
+   Scoped to .swiper so it inherits down to .swiper-pagination and wins over
+   the defaults in swiper/css regardless of bundle order. The stock bullets
+   are #000 at 20% opacity, which is invisible on our navy/teal surfaces.
+   ========================================================================== */
+
+.swiper {
+  --swiper-theme-color: var(--color-primary);
+  --swiper-pagination-color: var(--color-primary);
+  --swiper-pagination-bullet-inactive-color: #ffffff;
+  --swiper-pagination-bullet-inactive-opacity: 0.4;
+  --swiper-pagination-bullet-size: 8px;
+  --swiper-pagination-bullet-horizontal-gap: 6px;
+  --swiper-pagination-bottom: 4px;
+}
+
+/* ==========================================================================
+   Packages slider — content crossfade
+   The white card slides between fixed label slots; only its text fades.
+   Both directions run at once so the old package ghosts out under the
+   incoming one, as in the design.
+   ========================================================================== */
+
+@keyframes package-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes package-content-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

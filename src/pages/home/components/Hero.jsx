@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 
 const slides = [
   {
@@ -150,7 +149,6 @@ const Hero = () => {
           {/* Cards slider */}
           <div className="relative min-w-0 lg:col-span-5">
             <Swiper
-              dir="rtl"
               onSwiper={(instance) => {
                 setSwiper(instance);
                 syncNavigation(instance);
