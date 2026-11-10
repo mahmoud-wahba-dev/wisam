@@ -1,41 +1,42 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import kid1 from "@/assets/imgs/kids/kid.webp";
+import kid2 from "@/assets/imgs/kids/kid2.webp";
+import kid3 from "@/assets/imgs/kids/kid3.webp";
+import kid4 from "@/assets/imgs/kids/kid4.webp";
+import kid5 from "@/assets/imgs/kids/kid5.webp";
 
 const slides = [
   {
     title: "تعرّف علينا",
     to: "/about-wisam/story",
-    image:
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=70",
+    image: kid1,
     overlay: "from-secondary/95 via-secondary/35",
   },
   {
     title: "الحوكمة والشفافية",
     to: "/governance/legal-documents",
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=70",
+    image: kid2,
     overlay: "from-info/90 via-info/35",
   },
   {
     title: "تقاريرنا",
     to: "/reports/profile",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=70",
+    image: kid3,
     overlay: "from-accent/90 via-accent/35",
   },
   {
     title: "المركز الإعلامي",
     to: "/media-center/news",
-    image:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=70",
+    image: kid4,
     overlay: "from-secondary/85 via-secondary/30",
   },
   {
     title: "انضم إلينا",
     to: "/memberships",
-    image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=70",
+    image: kid5,
     overlay: "from-secondary/95 via-secondary/35",
   },
 ];
@@ -61,20 +62,85 @@ const ArrowIcon = ({ direction }) => (
   </svg>
 );
 
-// Hero background footage.
-// Drop the final clip at `public/videos/hero.mp4` (and an optional still at
-// `public/videos/hero-poster.jpg`); the CDN copy below is only a fallback so
-// the background keeps working until the local file is in place.
-const HERO_VIDEO_LOCAL = "/videos/hero.mp4";
-const HERO_VIDEO_FALLBACK =
-  "https://www.ithra.com/application/files/8416/9884/3351/drone_1.mp4";
-const HERO_POSTER = "/videos/hero-poster.jpg";
+// Hero background footage: the society's own YouTube video, embedded muted and
+// looped, scaled to cover the hero. The still frame underneath covers the first
+// paint, so the heavy third-party player is only attached once the page is idle.
+// `controls=0` plus the pointer-events-none wrapper keep every player control
+// hidden — the clip is purely decorative.
+const HERO_VIDEO_ID = "WhyGXUakD84";
+const HERO_VIDEO_EMBED =
+  `https://www.youtube-nocookie.com/embed/${HERO_VIDEO_ID}` +
+  `?autoplay=1&mute=1&loop=1&playlist=${HERO_VIDEO_ID}` +
+  "&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3" +
+  "&disablekb=1&fs=0&cc_load_policy=0&autohide=1&enablejsapi=1";
+const HERO_POSTER = `https://i.ytimg.com/vi/${HERO_VIDEO_ID}/maxresdefault.jpg`;
+
+// Skip the player entirely when it would cost more than it gives: reduced
+// motion, data-saver, slow networks, or small screens (the poster still shows
+// the same frame, and the video is decorative there).
+const skipHeroVideo = () => {
+  if (typeof window === "undefined") return true;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return true;
+  if (window.matchMedia?.("(max-width: 480px)").matches) return true;
+  const connection = navigator.connection;
+  if (connection?.saveData) return true;
+  return /(^|-)2g$/.test(connection?.effectiveType ?? "");
+};
 
 const Hero = () => {
   const [swiper, setSwiper] = useState(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [videoMounted, setVideoMounted] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(true);
+  const headerRef = useRef(null);
+  const frameRef = useRef(null);
+
+  // Attach the YouTube player only once the browser is idle, so the poster and
+  // the hero copy paint first and the third-party player never blocks the LCP.
+  useEffect(() => {
+    if (skipHeroVideo()) return;
+    let idleId;
+    let timeoutId;
+    if ("requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(() => setVideoMounted(true), {
+        timeout: 2500,
+      });
+    } else {
+      timeoutId = window.setTimeout(() => setVideoMounted(true), 1000);
+    }
+    return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  // Pause the clip while the hero is off-screen: a playing player keeps
+  // decoding video even when nobody can see it.
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    frame.contentWindow?.postMessage(
+      JSON.stringify({
+        event: "command",
+        func: videoVisible ? "playVideo" : "pauseVideo",
+        args: [],
+      }),
+      "*",
+    );
+  }, [videoVisible, videoMounted]);
+
+  useEffect(() => {
+    const element = headerRef.current;
+    if (!element || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVideoVisible(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   const syncNavigation = (instance) => {
     setAtStart(instance.isBeginning);
@@ -83,26 +149,44 @@ const Hero = () => {
   };
 
   return (
-    <header className="brand-gradient relative isolate min-h-screen overflow-x-clip text-white">
+    <header
+      ref={headerRef}
+      className="brand-gradient relative isolate min-h-screen overflow-x-clip text-white"
+    >
       {/* Background layer: clipped so blurs/video never leak, while the
           floating carousel below can extend beyond the hero edge. */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={HERO_POSTER}
-          className="absolute inset-0 size-full object-cover"
-        >
-          <source src={HERO_VIDEO_LOCAL} type="video/mp4" />
-          <source src={HERO_VIDEO_FALLBACK} type="video/mp4" />
-        </video>
+        {/* Cheap radial pools instead of 160px CSS blurs — same softness
+            without the per-frame paint cost, and hidden under the poster. */}
+        <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-[radial-gradient(circle,var(--color-primary),transparent_70%)] opacity-25" />
+        <div className="absolute bottom-0 end-0 size-[32rem] rounded-full bg-[radial-gradient(circle,var(--color-accent),transparent_70%)] opacity-25" />
 
-        {/* Soft light pools over the brand backdrop */}
-        <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-primary/20 blur-[160px]" />
-        <div className="absolute bottom-0 end-0 size-[32rem] rounded-full bg-accent/30 blur-[160px]" />
+        {/* Still frame — covers the first paint and doubles as the fallback
+            when the player is skipped or cannot autoplay. */}
+        <img
+          src={HERO_POSTER}
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+          draggable="false"
+          className="absolute inset-0 size-full select-none object-cover"
+        />
+
+        {/* 16:9 iframe scaled to cover the hero and over-cropped so YouTube's own
+            UI (title/gradient/bars) stays outside the clipped area. controls=0 and
+            pointer-events-none keep it non-interactive; this is purely decorative. */}
+        {videoMounted && (
+          <iframe
+            ref={frameRef}
+            src={HERO_VIDEO_EMBED}
+            title="فيديو وسام"
+            aria-hidden="true"
+            tabIndex={-1}
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[76vw] min-h-[135%] w-[135vw] min-w-[240vh] -translate-x-1/2 -translate-y-1/2 border-0"
+          />
+        )}
 
         {/* Side scrim + bottom overlay keep the text legible over the footage */}
         <div className="absolute inset-0 bg-gradient-to-l from-secondary/85 via-secondary/35 to-secondary/10" />

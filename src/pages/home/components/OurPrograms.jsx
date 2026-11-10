@@ -11,6 +11,16 @@ import {
   Zap,
 } from "lucide-react";
 
+import kid1 from "@/assets/imgs/kids/kid.webp";
+import kid2 from "@/assets/imgs/kids/kid2.webp";
+import kid3 from "@/assets/imgs/kids/kid3.webp";
+import kid4 from "@/assets/imgs/kids/kid4.webp";
+import kid5 from "@/assets/imgs/kids/kid5.webp";
+import kid6 from "@/assets/imgs/kids/kid6.webp";
+import kid7 from "@/assets/imgs/kids/kid7.webp";
+import kid8 from "@/assets/imgs/kids/kid8.webp";
+import kid9 from "@/assets/imgs/kids/kid9.webp";
+
 const facilities = [
   {
     key: "theater",
@@ -18,8 +28,7 @@ const facilities = [
     title: "مسرح",
     subtitle: "وسام",
     icon: Drama,
-    image:
-      "https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=1600&q=70",
+    image: kid1,
   },
   {
     key: "child-museum",
@@ -27,8 +36,7 @@ const facilities = [
     title: "متحف",
     subtitle: "الطفل",
     icon: Puzzle,
-    image:
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1600&q=70",
+    image: kid2,
   },
   {
     key: "museum",
@@ -36,16 +44,14 @@ const facilities = [
     title: "متحف",
     subtitle: "وسام",
     icon: ImageIcon,
-    image:
-      "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=70",
+    image: kid3,
   },
   {
     key: "cinema",
     name: "السينما",
     title: "السينما",
     icon: Film,
-    image:
-      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=70",
+    image: kid4,
   },
   {
     key: "idea-lab",
@@ -53,8 +59,7 @@ const facilities = [
     title: "مختبر",
     subtitle: "الأفكار",
     icon: Lightbulb,
-    image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=70",
+    image: kid5,
   },
   {
     key: "library",
@@ -62,8 +67,7 @@ const facilities = [
     title: "مكتبة",
     subtitle: "وسام",
     icon: BookOpen,
-    image:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=70",
+    image: kid6,
   },
   {
     key: "dining",
@@ -71,8 +75,7 @@ const facilities = [
     title: "تجارب",
     subtitle: "الطعام",
     icon: UtensilsCrossed,
-    image:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=70",
+    image: kid7,
   },
   {
     key: "academy",
@@ -80,8 +83,7 @@ const facilities = [
     title: "أكاديمية",
     subtitle: "وسام",
     icon: Atom,
-    image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=70",
+    image: kid8,
   },
   {
     key: "energy",
@@ -89,8 +91,7 @@ const facilities = [
     title: "معرض",
     subtitle: "الطاقة",
     icon: Zap,
-    image:
-      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=70",
+    image: kid9,
   },
 ];
 

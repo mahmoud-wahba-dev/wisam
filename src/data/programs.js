@@ -1,11 +1,17 @@
+import kid1 from "@/assets/imgs/kids/kid.webp";
+import kid2 from "@/assets/imgs/kids/kid2.webp";
+import kid6 from "@/assets/imgs/kids/kid6.webp";
+import kid7 from "@/assets/imgs/kids/kid7.webp";
+import kid8 from "@/assets/imgs/kids/kid8.webp";
+import kid9 from "@/assets/imgs/kids/kid9.webp";
+
 // Shared program data used by the home slider, the programs listing and the
 // program detail page.
 export const programs = [
   {
     id: "child-saturday",
     title: "سبت الطفل",
-    image:
-      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=800&q=70",
+    image: kid6,
     tags: [{ label: "أطفال" }],
     date: "14 نوفمبر 2026",
     age: "+3 سنوات مع العائلات",
@@ -17,8 +23,7 @@ export const programs = [
   {
     id: "wind-energy",
     title: "طاقة الرياح",
-    image:
-      "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=800&q=70",
+    image: kid7,
     tags: [{ label: "نشاط", tone: "cool" }],
     date: "14 نوفمبر 2026",
     age: "+7 سنوات مع العائلات",
@@ -30,8 +35,7 @@ export const programs = [
   {
     id: "library-workshop",
     title: "ورشة عمل في المكتبة",
-    image:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=70",
+    image: kid8,
     tags: [{ label: "نشاط", tone: "cool" }, { label: "المكتبة" }],
     date: "14 نوفمبر 2026",
     age: "العائلات",
@@ -43,8 +47,7 @@ export const programs = [
   {
     id: "cat-in-a-box",
     title: "قطة في صندوق",
-    image:
-      "https://images.unsplash.com/photo-1607083206968-13611e3d76db?auto=format&fit=crop&w=800&q=70",
+    image: kid9,
     tags: [{ label: "نشاط", tone: "cool" }, { label: "أطفال" }],
     date: "14 نوفمبر 2026",
     age: "6-2 سنوات مع العائلات",
@@ -56,8 +59,7 @@ export const programs = [
   {
     id: "craft-session",
     title: "ورشة الحرف اليدوية",
-    image:
-      "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=800&q=70",
+    image: kid1,
     tags: [{ label: "أطفال" }],
     date: "15 نوفمبر 2026",
     age: "+6 سنوات مع العائلات",
@@ -69,8 +71,7 @@ export const programs = [
   {
     id: "idea-lab",
     title: "مختبر الأفكار",
-    image:
-      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=70",
+    image: kid2,
     tags: [{ label: "نشاط", tone: "cool" }],
     date: "15 نوفمبر 2026",
     age: "+9 سنوات",
