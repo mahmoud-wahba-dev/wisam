@@ -74,48 +74,45 @@ const Hero = () => {
   const [swiper, setSwiper] = useState(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const syncNavigation = (instance) => {
     setAtStart(instance.isBeginning);
     setAtEnd(instance.isEnd);
+    setActiveIndex(instance.activeIndex);
   };
 
   return (
-    <header className="brand-gradient relative isolate min-h-screen overflow-hidden text-white">
-      {/* Looping background footage, with the brand gradient showing through
-          while the video loads or if it cannot be played. */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={HERO_POSTER}
-        aria-hidden="true"
-        className="absolute inset-0 -z-20 size-full object-cover"
-      >
-        <source src={HERO_VIDEO_LOCAL} type="video/mp4" />
-        <source src={HERO_VIDEO_FALLBACK} type="video/mp4" />
-      </video>
+    <header className="brand-gradient relative isolate min-h-screen overflow-x-clip text-white">
+      {/* Background layer: clipped so blurs/video never leak, while the
+          floating carousel below can extend beyond the hero edge. */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={HERO_POSTER}
+          className="absolute inset-0 size-full object-cover"
+        >
+          <source src={HERO_VIDEO_LOCAL} type="video/mp4" />
+          <source src={HERO_VIDEO_FALLBACK} type="video/mp4" />
+        </video>
 
-      {/* Soft light pools over the brand backdrop */}
-      <div
-        aria-hidden="true"
-        className="absolute -top-40 -start-32 -z-10 size-[36rem] rounded-full bg-primary/20 blur-[160px]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 end-0 -z-10 size-[32rem] rounded-full bg-accent/30 blur-[160px]"
-      />
+        {/* Soft light pools over the brand backdrop */}
+        <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-primary/20 blur-[160px]" />
+        <div className="absolute bottom-0 end-0 size-[32rem] rounded-full bg-accent/30 blur-[160px]" />
 
-      {/* Side scrim + bottom overlay keep the text legible over the footage */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-secondary/85 via-secondary/35 to-secondary/10" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
+        {/* Side scrim + bottom overlay keep the text legible over the footage */}
+        <div className="absolute inset-0 bg-gradient-to-l from-secondary/85 via-secondary/35 to-secondary/10" />
+        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
+      </div>
 
       <div className="container relative z-10 flex min-h-screen flex-col justify-end pb-10 pt-36 sm:pt-44 lg:pb-16">
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Heading, search and CTA */}
-          <div className="lg:col-span-7">
+          <div className="relative z-20 lg:col-span-7">
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl">
               ألهم عالمك
             </h1>
@@ -158,13 +155,14 @@ const Hero = () => {
           </div>
 
           {/* Cards slider */}
-          <div className="relative min-w-0 lg:col-span-5">
+          <div className="relative z-10 min-w-0 lg:col-span-5">
             <Swiper
               onSwiper={(instance) => {
                 setSwiper(instance);
                 syncNavigation(instance);
               }}
               onSlideChange={syncNavigation}
+              onActiveIndexChange={syncNavigation}
               onResize={syncNavigation}
               slidesPerView={1.15}
               spaceBetween={16}
@@ -175,35 +173,45 @@ const Hero = () => {
                 1024: { slidesPerView: 2, spaceBetween: 24 },
                 1536: { slidesPerView: 2, spaceBetween: 30 },
               }}
-              className="hero-swiper"
+              className="hero-swiper !overflow-visible"
             >
-              {slides.map(({ title, to, image, overlay }) => (
-                <SwiperSlide key={to}>
-                  <Link
-                    to={to}
-                    className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-secondary"
-                  >
-                    <img
-                      src={image}
-                      alt=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div
-                      className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t ${overlay} to-transparent`}
-                    />
-                    <div className="relative p-6 pb-7 text-center">
-                      <p className="text-lg font-bold text-white sm:text-xl">
-                        {title}
-                      </p>
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              ))}
+              {slides.map(({ title, to, image, overlay }, index) => {
+                const isActive = index === activeIndex;
+                return (
+                  <SwiperSlide key={to}>
+                    <Link
+                      to={to}
+                      className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-secondary"
+                    >
+                      <img
+                        src={image}
+                        alt=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div
+                        className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t ${overlay} to-transparent`}
+                      />
+                      {/* Inactive/slid cards stay visible but sit under a dim
+                          layer so the active card reads clearly. */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 z-20 bg-secondary/55 transition-opacity duration-500"
+                        style={{ opacity: isActive ? 0 : 1 }}
+                      />
+                      <div className="relative z-30 p-6 pb-7 text-center">
+                        <p className="text-lg font-bold text-white sm:text-xl">
+                          {title}
+                        </p>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
 
-            <div className="mt-5 flex items-center justify-end gap-3 lg:absolute lg:bottom-0 lg:end-0 lg:mt-0">
+            <div className="relative z-20 mt-6 flex items-center justify-end gap-3">
               <button
                 type="button"
                 aria-label="الشريحة السابقة"

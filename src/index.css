@@ -240,4 +240,29 @@
   }
 }
 
+/* ==========================================================================
+   Hero carousel — floating cards
+   The swiper overflows its column so slid cards remain visible instead of
+   being clipped away. Inactive cards stay in view under a dim layer, while the
+   active card reads clearly.
+   ========================================================================== */
+
+.hero-swiper,
+.hero-swiper .swiper-wrapper {
+  overflow: visible;
+}
+
+.hero-swiper .swiper-slide {
+  transition:
+    transform 500ms ease,
+    filter 500ms ease;
+}
+
+.hero-swiper .swiper-slide:not(.swiper-slide-active) {
+  transform: scale(0.97);
+}
+
+/* Inactive-card dimming is driven by React state in Hero.jsx so it works
+   regardless of Swiper's class/state timing. */
+
 
