@@ -1,36 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router";
+import { packages } from "@/data/packages";
 
 const AUTOPLAY_MS = 3000;
 const SLIDE_MS = 700;
-
-// RTL order: the first item sits on the right, matching the design.
-const packages = [
-  {
-    id: "knowledge",
-    title: "باقة المعرفة",
-    description: "وصول كامل إلى المكتبة والمحاضرات والبرامج الثقافية على مدار العام",
-    cta: "مزايا العضوية",
-  },
-  {
-    id: "art",
-    title: "باقة الفن",
-    description: "تجارب فنية وورش عمل وعروض مسرحية وسينمائية لأصحاب الذوق الرفيع",
-    cta: "مزايا العضوية",
-  },
-  {
-    id: "family",
-    title: "باقة العائلة",
-    description: "أنشطة مشتركة لكل أفراد العائلة مع خصومات على البرامج والزيارات",
-    cta: "مزايا العضوية",
-  },
-  {
-    id: "excellence",
-    title: "باقة التميز",
-    description: "مناسبة لمن يحب التعلم وتطوير مهارات جديدة والبحث عن التحدي",
-    cta: "مزايا العضوية",
-  },
-];
 
 const PackageDetails = ({ pkg, animateIn = false, baseDelay = 0 }) => {
   const enter = animateIn
@@ -46,14 +20,14 @@ const PackageDetails = ({ pkg, animateIn = false, baseDelay = 0 }) => {
         {pkg.description}
       </p>
 
-      <a
-        href="#"
+      <Link
+        to="/memberships"
         className={`${enter} btn btn-primary pointer-events-auto mt-6 w-fit rounded-full border-none px-6`}
         style={animateIn ? { animationDelay: `${baseDelay + 200}ms` } : undefined}
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        {pkg.cta}
-      </a>
+        مزايا العضوية
+      </Link>
     </>
   );
 };

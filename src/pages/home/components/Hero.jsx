@@ -1,62 +1,48 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const slides = [
   {
-    title: "سجل الآن!",
-    href: "https://www.ithra.com/ar/special-programs/iread",
+    title: "تعرّف علينا",
+    to: "/about-wisam/story",
     image:
-      "https://www.ithra.com/application/files/cache/thumbnails/139685522d2e62e198246a38e594fdd0.jpg",
+      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=70",
+    overlay: "from-secondary/95 via-secondary/35",
+  },
+  {
+    title: "الحوكمة والشفافية",
+    to: "/governance/legal-documents",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=70",
     overlay: "from-info/90 via-info/35",
   },
   {
-    title: "سجل الآن!",
-    href: "https://www.ithra.com/ar/special-programs/stem-racing-ksa/stem-racing-registration-2027",
+    title: "تقاريرنا",
+    to: "/reports/profile",
     image:
-      "https://www.ithra.com/application/files/cache/thumbnails/ee28d3bea2ddef4f09130ae778ae5220.jpg",
-    overlay: "from-secondary/95 via-secondary/40",
-  },
-  {
-    title: "اكتشف الآن!",
-    href: "https://ithraeyat.ithra.com/ar/editions/jdhwr",
-    image:
-      "https://www.ithra.com/application/files/cache/thumbnails/b3e716a185f005ef36fecc292a4d3359.jpg",
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=70",
     overlay: "from-accent/90 via-accent/35",
   },
   {
-    title: "اكتشف المعرض الآن!",
-    href: "https://www.ithra.com/ar/programme/2026/ithra-art-prize-exhibition",
+    title: "المركز الإعلامي",
+    to: "/media-center/news",
     image:
-      "https://www.ithra.com/application/files/cache/thumbnails/393ceb35c6b42e0c009eba72ca3ad551.png",
-    overlay: "from-info/90 via-info/35",
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=70",
+    overlay: "from-secondary/85 via-secondary/30",
   },
   {
-    title: "احجز مقعدك الآن!",
-    href: "https://www.ithra.com/ar/visit-ithra/attractions/ithra-academy",
+    title: "انضم إلينا",
+    to: "/memberships",
     image:
-      "https://www.ithra.com/application/files/cache/thumbnails/d781995bfa4b7f5563460af85311dbfc.png",
-    overlay: "from-secondary/85 via-secondary/30",
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=70",
+    overlay: "from-secondary/95 via-secondary/35",
   },
 ];
 
 const SearchIcon = () => (
   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
     <path d="M16.041 15.856c-.034.026-.067.055-.099.087s-.06.064-.087.099c-1.258 1.213-2.969 1.958-4.855 1.958-1.933 0-3.682-.782-4.95-2.05s-2.05-3.017-2.05-4.95.782-3.682 2.05-4.95 3.017-2.05 4.95-2.05 3.682.782 4.95 2.05 2.05 3.017 2.05 4.95c0 1.886-.745 3.597-1.959 4.856zm5.666 4.437-3.675-3.675c1.231-1.54 1.968-3.493 1.968-5.618 0-2.485-1.008-4.736-2.636-6.364s-3.879-2.636-6.364-2.636-4.736 1.008-6.364 2.636-2.636 3.879-2.636 6.364 1.008 4.736 2.636 6.364 3.879 2.636 6.364 2.636c2.125 0 4.078-.737 5.618-1.968l3.675 3.675c.391.391 1.024.391 1.414 0s.391-1.024 0-1.414z" />
-  </svg>
-);
-
-const ChevronDownIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-4"
-    aria-hidden="true"
-  >
-    <path d="m6 9 6 6 6-6" />
   </svg>
 );
 
@@ -86,22 +72,19 @@ const Hero = () => {
   };
 
   return (
-    <header className="relative isolate min-h-screen overflow-hidden bg-secondary text-white">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster="https://www.ithra.com/application/files/cache/thumbnails/6ed2768de9916a7f3f6d40e5e9f3d877.jpg"
+    <header className="brand-gradient relative isolate min-h-screen overflow-hidden text-white">
+      {/* Soft light pools over the brand backdrop */}
+      <div
         aria-hidden="true"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
-        src="https://www.ithra.com/application/files/8416/9884/3351/drone_1.mp4"
+        className="absolute -top-40 -start-32 -z-10 size-[36rem] rounded-full bg-primary/20 blur-[160px]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 end-0 -z-10 size-[32rem] rounded-full bg-accent/30 blur-[160px]"
       />
 
-      {/* Bottom-half overlay + side scrim, as in the original banner */}
+      {/* Bottom-half overlay for text legibility */}
       <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-secondary/80 via-secondary/25 to-secondary/10" />
 
       <div className="container relative z-10 flex min-h-screen flex-col justify-end pb-10 pt-36 sm:pt-44 lg:pb-16">
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
@@ -110,7 +93,9 @@ const Hero = () => {
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl">
               ألهم عالمك
             </h1>
-            <p className="mt-2 text-lg text-white/85 sm:text-xl">إثراء, وجهتك الثقافية</p>
+            <p className="mt-2 text-lg text-white/85 sm:text-xl">
+              وسام، عطاءٌ يمتد
+            </p>
 
             <form
               role="search"
@@ -118,12 +103,12 @@ const Hero = () => {
               className="relative mt-8 w-full max-w-lg"
             >
               <label htmlFor="hero-search" className="sr-only">
-                ابحث عن المعارض والبرامج والفعاليات والعروض
+                ابحث عن البرامج والخدمات والمبادرات
               </label>
               <input
                 id="hero-search"
                 type="search"
-                placeholder="ابحث عن المعارض والبرامج والفعاليات والعروض..."
+                placeholder="ابحث عن البرامج والخدمات والمبادرات..."
                 className="h-14 w-full rounded-full border-0 bg-white ps-12 pe-6 text-base text-secondary shadow-xl placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
               />
               <button
@@ -136,13 +121,13 @@ const Hero = () => {
             </form>
 
             <div className="mt-6">
-              <a
-                href="#program"
+              <Link
+                to="/programs"
                 className="btn btn-primary h-14 rounded-full px-7 text-base font-bold"
               >
                 اكتشف البرامج
-                <ChevronDownIcon />
-              </a>
+                <ArrowIcon direction="left" />
+              </Link>
             </div>
           </div>
 
@@ -166,17 +151,15 @@ const Hero = () => {
               }}
               className="hero-swiper"
             >
-              {slides.map(({ title, href, image, overlay }) => (
-                <SwiperSlide key={href}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
+              {slides.map(({ title, to, image, overlay }) => (
+                <SwiperSlide key={to}>
+                  <Link
+                    to={to}
                     className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-secondary"
                   >
                     <img
                       src={image}
-                      alt={title}
+                      alt=""
                       loading="lazy"
                       referrerPolicy="no-referrer"
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -185,9 +168,11 @@ const Hero = () => {
                       className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t ${overlay} to-transparent`}
                     />
                     <div className="relative p-6 pb-7 text-center">
-                      <p className="text-lg font-bold text-white sm:text-xl">{title}</p>
+                      <p className="text-lg font-bold text-white sm:text-xl">
+                        {title}
+                      </p>
                     </div>
-                  </a>
+                  </Link>
                 </SwiperSlide>
               ))}
             </Swiper>

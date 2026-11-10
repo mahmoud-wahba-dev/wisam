@@ -7,7 +7,7 @@ const Packages = () => {
       <div className="container">
         <div className="center mb-14">
           <h2 className="font-bold text-white text-5xl">
-            انضم إلى مجتمع إثراء
+            أرقام تميزنا
           </h2>
         </div>
         <p className="center font-semibold text-2xl text-white mb-10">تبدأ من</p>

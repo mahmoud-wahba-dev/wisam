@@ -1,49 +1,17 @@
-import React from "react";
+import { Link } from "react-router";
+import { navSections } from "@/data/siteNav";
 
-const visitLinks = [
-  "زورونا",
-  "الزيارات المدرسية",
-  "الزيارات الجماعية",
-  "جولة إثراء الافتراضية 360",
-  "يحث الآن",
-  "سهولة الوصول",
-  "جولات إثراء",
-  "معلومات الدخول والأوقات",
-  "مرافق للتأجير",
-  "الأسئلة الشائعة",
-];
-
-const aboutLinks = [
-  "معاصر",
-  "عن إثراء",
-  "المتحف",
-  "متحف الطفل",
-  "مسرح إثراء",
-  "السينما",
-  "المكتبة",
-  "مختبر الأفكار",
-  "معرض الطاقة",
-  "تجارب الطعام",
-];
-
-const identityLinks = [
-  "دليل الهوية",
-  "تقرير إثراء السنوي",
-  "مدونة إثراء",
-  "مجلة إثرائيات",
-  "النشرة الإخبارية",
-];
-
-const joinLinks = ["التوظيف", "عضوية إثراء", "تعاون مع إثراء", "التطوع"];
+const [aboutSection, governanceSection, reportsSection, mediaSection] =
+  navSections;
 
 const openingHours = [
-  { day: "الأحد", time: "مغلق", closed: true },
-  { day: "الاثنين", time: "مغلق", closed: true },
-  { day: "الثلاثاء", time: "9 صباحًا – 11 مساءً" },
-  { day: "الأربعاء", time: "9 صباحًا – 11 مساءً" },
-  { day: "الخميس", time: "9 صباحًا – 11 مساءً" },
-  { day: "الجمعة", time: "4 عصرًا – 11 مساءً" },
-  { day: "السبت", time: "9 صباحًا – 11 مساءً" },
+  { day: "الأحد", time: "8 صباحًا – 4 مساءً" },
+  { day: "الاثنين", time: "8 صباحًا – 4 مساءً" },
+  { day: "الثلاثاء", time: "8 صباحًا – 4 مساءً" },
+  { day: "الأربعاء", time: "8 صباحًا – 4 مساءً" },
+  { day: "الخميس", time: "8 صباحًا – 4 مساءً" },
+  { day: "الجمعة", time: "مغلق", closed: true },
+  { day: "السبت", time: "مغلق", closed: true },
 ];
 
 const socials = [
@@ -99,25 +67,38 @@ const socials = [
   },
 ];
 
-const FooterLink = ({ children }) => (
+const FooterLink = ({ to, children }) => (
   <li>
-    <a
-      href="#"
+    <Link
+      to={to}
       className="inline-block text-base text-white/75 transition-colors duration-200 hover:text-amber-light focus-visible:text-amber-light focus-visible:outline-none"
     >
       {children}
-    </a>
+    </Link>
   </li>
+);
+
+const FooterColumn = ({ section }) => (
+  <div>
+    <h2 className="mb-6 text-lg font-bold sm:text-xl">{section.label}</h2>
+    <ul className="space-y-3.5">
+      {section.pages.map(({ label, slug }) => (
+        <FooterLink key={label} to={`${section.basePath}/${slug}`}>
+          {label}
+        </FooterLink>
+      ))}
+    </ul>
+  </div>
 );
 
 const currentYear = new Date().getFullYear();
 
 const Footer = () => {
   return (
-    <footer className="footer-gradient relative  text-white">
+    <footer className="footer-gradient relative text-white">
       <div className="container py-16 lg:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-14 xl:gap-24">
-          {/* النشرة الإخبارية + التواصل + أوقات الزيارة */}
+          {/* النشرة الإخبارية + التواصل + أوقات العمل */}
           <div className="order-1 space-y-10 md:col-span-2 lg:order-3 lg:col-span-1">
             <div>
               <h2 className="mb-6 text-lg font-bold sm:text-xl">اشترك في النشرة الإخبارية</h2>
@@ -157,11 +138,21 @@ const Footer = () => {
 
               <p className="mt-3 text-xs leading-relaxed text-white/75">
                 هذا الموقع محمي بواسطة reCAPTCHA وتطبق{" "}
-                <a href="#" className="text-amber-light underline underline-offset-2 hover:text-white">
+                <a
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-amber-light underline underline-offset-2 hover:text-white"
+                >
                   سياسة الخصوصية
                 </a>{" "}
                 و
-                <a href="#" className="text-amber-light underline underline-offset-2 hover:text-white">
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-amber-light underline underline-offset-2 hover:text-white"
+                >
                   شروط الخدمة
                 </a>{" "}
                 من موقع Google
@@ -188,11 +179,7 @@ const Footer = () => {
             </div>
 
             <div>
-              <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-                <h3 className="text-lg font-bold sm:text-xl">معلومات الدخول</h3>
-                <p className="text-sm text-white/75">أوقات الزيارة لمركز إثراء هي كالتالي:</p>
-              </div>
-
+              <h3 className="mb-5 text-lg font-bold sm:text-xl">أوقات العمل</h3>
               <dl className="max-w-md space-y-3">
                 {openingHours.map(({ day, time, closed }) => (
                   <div key={day} className="flex items-center justify-between gap-4">
@@ -209,18 +196,12 @@ const Footer = () => {
                   </div>
                 ))}
               </dl>
-
-              <p className="mt-4 max-w-md text-xs leading-relaxed text-white/75">
-                ملاحظة: تغلق أبواب متحف الطفل ومعرض الطاقة قبل موعد إغلاق المركز بساعتين.
-              </p>
             </div>
 
             <div>
               <h3 className="mb-5 text-lg font-bold sm:text-xl">الموقع</h3>
               <address className="text-sm not-italic leading-relaxed text-white/80 sm:text-base">
-                8386 الطريق الدائري، غرب الظهران
-                <br />
-                34461 الظهران
+                المملكة العربية السعودية
               </address>
             </div>
 
@@ -230,25 +211,13 @@ const Footer = () => {
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <dt className="text-white/75">هاتف:</dt>
                   <dd>
+                    {/* TODO: replace with the society's real phone number */}
                     <a
-                      href="tel:+9661338169799"
+                      href="tel:+966110000000"
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      +9661338169799
-                    </a>
-                  </dd>
-                </div>
-
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/75">الرقم المجاني و الواتساب:</dt>
-                  <dd>
-                    <a
-                      href="tel:8001221224"
-                      dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      8001221224
+                      +966 11 000 0000
                     </a>
                   </dd>
                 </div>
@@ -257,11 +226,11 @@ const Footer = () => {
                   <dt className="mb-1 text-white/75">خدمة العملاء:</dt>
                   <dd>
                     <a
-                      href="mailto:customercare@ithra.com"
+                      href="mailto:info@wisam.org.sa"
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      customercare@ithra.com
+                      info@wisam.org.sa
                     </a>
                   </dd>
                 </div>
@@ -270,11 +239,11 @@ const Footer = () => {
                   <dt className="mb-1 text-white/75">المركز الإعلامي:</dt>
                   <dd>
                     <a
-                      href="mailto:media@ithra.com"
+                      href="mailto:media@wisam.org.sa"
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      media@ithra.com
+                      media@wisam.org.sa
                     </a>
                   </dd>
                 </div>
@@ -283,25 +252,11 @@ const Footer = () => {
                   <dt className="mb-1 text-white/75">للشراكات والتعاون:</dt>
                   <dd>
                     <a
-                      href="mailto:relations@ithra.com"
+                      href="mailto:relations@wisam.org.sa"
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      relations@ithra.com
-                    </a>
-                  </dd>
-                </div>
-
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/75">مواقع أخرى:</dt>
-                  <dd>
-                    <a
-                      href="https://www.aramco.com"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      Aramco
+                      relations@wisam.org.sa
                     </a>
                   </dd>
                 </div>
@@ -309,63 +264,33 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* خطط زيارتك + انضم إلينا */}
-          <nav aria-label="خطط زيارتك" className="order-2 space-y-12 lg:order-1">
-            <div>
-              <h2 className="mb-6 text-lg font-bold sm:text-xl">خطط زيارتك</h2>
-              <ul className="space-y-3.5">
-                {visitLinks.map((link) => (
-                  <FooterLink key={link}>{link}</FooterLink>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="mb-6 text-lg font-bold sm:text-xl">انضم إلينا</h2>
-              <ul className="space-y-3.5">
-                {joinLinks.map((link) => (
-                  <FooterLink key={link}>{link}</FooterLink>
-                ))}
-              </ul>
-            </div>
+          {/* روابط الجمعية */}
+          <nav aria-label="روابط الجمعية" className="order-2 space-y-12 lg:order-1">
+            <FooterColumn section={aboutSection} />
+            <FooterColumn section={governanceSection} />
           </nav>
 
-          {/* عن إثراء */}
-          <nav aria-label="عن إثراء" className="order-3 space-y-12 lg:order-2">
-            <div>
-              <h2 className="mb-6 text-lg font-bold sm:text-xl">عن إثراء</h2>
-              <ul className="space-y-3.5">
-                {aboutLinks.map((link) => (
-                  <FooterLink key={link}>{link}</FooterLink>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <ul className="space-y-3.5">
-                {identityLinks.map((link) => (
-                  <FooterLink key={link}>{link}</FooterLink>
-                ))}
-              </ul>
-            </div>
+          <nav aria-label="التقارير والمركز الإعلامي" className="order-3 space-y-12 lg:order-2">
+            <FooterColumn section={reportsSection} />
+            <FooterColumn section={mediaSection} />
           </nav>
         </div>
       </div>
 
       <div className="border-t border-white/10">
         <div className="container flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/75 sm:flex-row">
-          <p>© {currentYear} مركز إثراء. جميع الحقوق محفوظة.</p>
+          <p>© {currentYear} جمعية وسام. جميع الحقوق محفوظة.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="transition-colors hover:text-amber-light">
+            <Link to="/privacy" className="transition-colors hover:text-amber-light">
               سياسة الخصوصية
-            </a>
-            <a href="#" className="transition-colors hover:text-amber-light">
+            </Link>
+            <Link to="/terms" className="transition-colors hover:text-amber-light">
               الشروط والأحكام
-            </a>
+            </Link>
           </div>
         </div>
       </div>
-    </footer> 
+    </footer>
   );
 };
 

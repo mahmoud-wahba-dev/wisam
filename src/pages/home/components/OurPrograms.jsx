@@ -14,9 +14,9 @@ import {
 const facilities = [
   {
     key: "theater",
-    name: "مسرح إثراء",
+    name: "مسرح وسام",
     title: "مسرح",
-    subtitle: "إثراء",
+    subtitle: "وسام",
     icon: Drama,
     image:
       "https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=1600&q=70",
@@ -32,9 +32,9 @@ const facilities = [
   },
   {
     key: "museum",
-    name: "متحف إثراء",
+    name: "متحف وسام",
     title: "متحف",
-    subtitle: "إثراء",
+    subtitle: "وسام",
     icon: ImageIcon,
     image:
       "https://images.unsplash.com/photo-1518998053901-5348d3961a04?auto=format&fit=crop&w=1600&q=70",
@@ -58,9 +58,9 @@ const facilities = [
   },
   {
     key: "library",
-    name: "مكتبة إثراء",
+    name: "مكتبة وسام",
     title: "مكتبة",
-    subtitle: "إثراء",
+    subtitle: "وسام",
     icon: BookOpen,
     image:
       "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=70",
@@ -76,9 +76,9 @@ const facilities = [
   },
   {
     key: "academy",
-    name: "أكاديمية إثراء",
+    name: "أكاديمية وسام",
     title: "أكاديمية",
-    subtitle: "إثراء",
+    subtitle: "وسام",
     icon: Atom,
     image:
       "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=70",
@@ -124,7 +124,7 @@ const Marafeqna = () => {
 
       <div className="container relative z-10 flex justify-start">
         <div>
-          <h2 className="mb-8 text-4xl font-bold sm:text-5xl lg:mb-10">مرافقنا</h2>
+          <h2 className="mb-8 text-4xl font-bold sm:text-5xl lg:mb-10">برامجنا</h2>
 
           <div dir="ltr" className="grid w-fit grid-cols-3 gap-3 sm:gap-5 lg:gap-9 xl:gap-12">
             {facilities.map(({ key, name, title, subtitle, icon: Icon }, index) => {

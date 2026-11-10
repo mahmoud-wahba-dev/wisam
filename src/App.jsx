@@ -1,52 +1,100 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import MasterLayout from "./layout/MasterLayout";
 import Home from "@/pages/home/Home";
-import VisitIthra from "@/pages/visit-ithra/VisitIthra";
+import SectionPage from "@/pages/section/SectionPage";
+import Programs from "@/pages/programs/Programs";
+import ProgramDetail from "@/pages/programs/ProgramDetail";
+import Products from "@/pages/products/Products";
 import Memberships from "@/pages/memberships/Memberships";
-import JoinIthra from "@/pages/join-ithra/JoinIthra";
-import PressRoom from "@/pages/press-room/PressRoom";
-import AboutIthra from "@/pages/about-ithra/AboutIthra";
-import ToursIthra from "@/pages/tours-ithra/ToursIthra";
+import Join from "@/pages/join/Join";
+import NewsPage from "@/pages/media/NewsPage";
+import NewsDetail from "@/pages/media/NewsDetail";
 import NotFound from "@/pages/not-found/NotFound";
+import { navSections } from "@/data/siteNav";
+
+// Megamenu entries that have a richer page than the shared placeholder.
+const specialPages = {
+  news: NewsPage,
+};
+
+// One index redirect + one page per megamenu entry.
+const navRoutes = navSections.flatMap(({ label: section, basePath, pages }) => [
+  {
+    path: basePath,
+    element: <Navigate to={`${basePath}/${pages[0].slug}`} replace />,
+  },
+  ...pages.map(({ label, slug, page }) => {
+    const Special = page ? specialPages[page] : null;
+
+    return {
+      path: `${basePath}/${slug}`,
+      element: Special ? (
+        <Special />
+      ) : (
+        <SectionPage section={section} title={label} />
+      ),
+    };
+  }),
+]);
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MasterLayout />,
     children: [
+      // Pathless route: keeps the navbar/footer around both page content and
+      // errors thrown while rendering a page.
       {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "/visit-ithra",
-        element: <VisitIthra />,
-      },
-      {
-        path: "/memberships",
-        element: <Memberships />,
-      },
-      {
-        path: "/join-ithra",
-        element: <JoinIthra />,
-      },
-      {
-        path: "/press-room",
-        element: <PressRoom />,
-      },
-      {
-        path: "/about-ithra",
-        element: <AboutIthra />,
-      },
-      {
-        path: "/tours-ithra",
-        element: <ToursIthra />,
+        errorElement: <NotFound />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "/programs",
+            element: <Programs />,
+          },
+          {
+            path: "/programs/:id",
+            element: <ProgramDetail />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/memberships",
+            element: <Memberships />,
+          },
+          {
+            path: "/join",
+            element: <Join />,
+          },
+          {
+            path: "/media-center/news/:id",
+            element: <NewsDetail />,
+          },
+          {
+            path: "/privacy",
+            element: <SectionPage section="قانوني" title="سياسة الخصوصية" />,
+          },
+          {
+            path: "/terms",
+            element: <SectionPage section="قانوني" title="الشروط والأحكام" />,
+          },
+          ...navRoutes,
+          {
+            path: "*",
+            element: <NotFound />,
+          },
+        ],
       },
     ],
-    errorElement: <NotFound />,
   },
 ]);
+
 function App() {
   return (
     <>

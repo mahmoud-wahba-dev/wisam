@@ -18,13 +18,13 @@ const HappenNow = () => {
   const [activePeriod, setActivePeriod] = useState("recommended");
 
   return (
-    <section className="bg-accent py-16">
+    <section id="program" className="bg-accent py-16">
       <div className="container">
 
         {/* ── Title row ── */}
         <div className="flex items-center justify-between mb-10">
           <h2 className="font-bold text-white text-5xl">يحدث الآن</h2>
-          <Link to="/" className="btn btn-primary">اكتشف البرامج</Link>
+          <Link to="/programs" className="btn btn-primary">اكتشف البرامج</Link>
         </div>
 
         {/* ── Full filter row: period chips + day picker ── */}

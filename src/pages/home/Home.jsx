@@ -1,6 +1,6 @@
 import HappenNow from "./components/HappenNow";
 import Hero from "./components/Hero";
-import IthraaAcademy from "./components/IthraaAcademy";
+import OurProducts from "./components/OurProducts";
 import Marafeqna from "./components/OurPrograms";
 import News from "./components/News";
 import Packages from "./components/Packages";
@@ -12,7 +12,7 @@ const Home = () => {
       <Hero />
       <Marafeqna />
       <HappenNow />
-      <IthraaAcademy />
+      <OurProducts />
       <Packages />
       <News />
       <DownloadApp />

@@ -1,67 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
+import { HeartHandshake } from "lucide-react";
+import { navSections } from "@/data/siteNav";
 
-const navlinks = [
-  "زورونا",
-  "البرامج",
-  "انضم الينا",
-  "غرفة الأخبار",
-  "عن إثراء",
-  "عضوية إثراء",
-];
+const navlinks = navSections.map((section) => section.label);
 
-const navMenus = {
-  زورونا: [
-    "خطط زيارتك",
-    "الزيارات المدرسية",
-    "الزيارات الجماعية",
-    "جولة إثراء الافتراضية 360",
-    "معلومات الدخول والأوقات",
-    "سهولة الوصول",
-    "الأسئلة الشائعة",
-  ],
-  البرامج: [
-    "مسابقة إثراء للمسريات القصيرة",
-    "أسبوع إثراء للتصميم",
-    "مبادرة إثراء المحتوى العربي",
-    "الشرقية تُبدع",
-    "مسابقة أقرأ للعالم العربي",
-    "جائزة إثراء للفنون",
-    "سياق STEM السعودية",
-    "إثراء التطوع",
-    "سينك",
-  ],
-  "انضم الينا": ["التوظيف", "التطوع", "عضوية إثراء", "تعاون مع إثراء"],
-  "غرفة الأخبار": ["الأخبار", "البيانات الصحفية", "مكتبة الصور", "تواصل معنا"],
-  "عن إثراء": ["عن إثراء", "الرؤية والرسالة", "دليل الهوية", "تقرير إثراء السنوي"],
-  "عضوية إثراء": ["عضوية الأفراد", "عضوية العائلات", "مزايا العضوية", "انضم الآن"],
-};
-
-const TicketIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-5"
-    aria-hidden="true"
-  >
-    <path d="M4 9V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6Z" />
-    <path d="M14 5v14" strokeDasharray="2 2" />
-  </svg>
+// Each menu points at the pages registered in `navSections`.
+const navMenus = Object.fromEntries(
+  navSections.map(({ label, basePath, pages }) => [
+    label,
+    pages.map((page) => ({
+      label: page.label,
+      to: `${basePath}/${page.slug}`,
+    })),
+  ])
 );
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(null);
+  // One step behind `openMenu`: keeps the previous menu mounted so the panel
+  // still has content to show while it animates out.
+  const [activeMenu, setActiveMenu] = useState(null);
+  // Bumped on every open so the staggered content animation replays even when
+  // the same menu is reopened.
+  const [menuKey, setMenuKey] = useState(0);
   const mobileMenuRef = useRef(null);
+  const isOpen = openMenu !== null;
 
   const toggleMenu = (item) => {
-    setOpenMenu((current) => (current === item ? null : item));
+    const closing = openMenu === item;
+    setActiveMenu(item);
+    // Only replay the staggered entrance when something is actually opening —
+    // bumping it on close would make the links re-animate while fading out.
+    if (!closing) setMenuKey((key) => key + 1);
+    setOpenMenu(closing ? null : item);
     mobileMenuRef.current?.hidePopover?.();
   };
+
+  const closeMenu = () => setOpenMenu(null);
 
   useEffect(() => {
     if (!openMenu) return;
@@ -82,9 +59,9 @@ const Navbar = () => {
   return (
     <div className="navbar gap-7 absolute top-0 left-0 z-50 w-full">
       <div className="relative z-50">
-        <a className="btn btn-link text-xl" onClick={() => setOpenMenu(null)}>
-          <img src={logo} alt="إثراء" className="max-h-20 " />
-        </a>
+        <Link to={"/"} className="btn btn-link text-xl" onClick={() => setOpenMenu(null)}>
+          <img src={logo} alt="وسام" className="max-h-20" />
+        </Link>
       </div>
 
       <div className="hidden lg:block lg:w-1/3" aria-hidden="true" />
@@ -123,53 +100,75 @@ const Navbar = () => {
           </div>
         </ul>
 
-        <Link to="/tours-ithra" className="btn btn-primary gap-2" onClick={() => setOpenMenu(null)}>
-          <TicketIcon />
-          جولات إثراء
+        <Link to="/join" className="btn btn-primary gap-2" onClick={() => setOpenMenu(null)}>
+          <HeartHandshake className="size-5" aria-hidden="true" />
+          انضم إلينا
         </Link>
       </div>
 
-      {openMenu && (
-        <>
-          <button
-            type="button"
-            aria-label="إغلاق القائمة"
-            className="fixed inset-0 z-40 cursor-default bg-secondary/80 backdrop-blur-sm"
-            onClick={() => setOpenMenu(null)}
-          />
+      {/* Backdrop — fades in/out instead of snapping. */}
+      <button
+        type="button"
+        aria-label="إغلاق القائمة"
+        aria-hidden={!isOpen}
+        tabIndex={isOpen ? 0 : -1}
+        onClick={closeMenu}
+        className={`fixed inset-0 z-40 cursor-default bg-secondary/80 backdrop-blur-sm transition-[opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
+          isOpen ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      />
 
-          <div
-            id="c1"
-            className="footer-gradient fixed inset-x-0 top-28 bottom-0 z-50 overflow-y-auto text-white"
-          >
-            <div className="container min-h-full py-10 lg:py-20">
-              <div className="grid min-h-full grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-0">
-                <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:pe-8">
-                  <h2 className="text-2xl font-bold sm:text-3xl lg:text-4xl">{openMenu}</h2>
-                </div>
-
-                <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
-                  <ul className="space-y-4 sm:space-y-5">
-                    {navMenus[openMenu].map((link) => (
-                      <li key={link}>
-                        <a
-                          href="#"
-                          onClick={() => setOpenMenu(null)}
-                          className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
-                        >
-                          {link}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="hidden lg:col-span-2 lg:block" aria-hidden="true" />
+      {/*
+        The panel stays mounted so `opacity`/`transform`/`visibility` can
+        transition in both directions. `activeMenu` keeps its content alive
+        during the closing animation.
+      */}
+      <div
+        id="c1"
+        aria-hidden={!isOpen}
+        className={`footer-gradient fixed inset-x-0 top-28 bottom-0 z-50 overflow-y-auto text-white transition-[opacity,transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+          isOpen
+            ? "visible translate-y-0 opacity-100"
+            : "invisible -translate-y-3 opacity-0"
+        }`}
+      >
+        <div
+          key={`${activeMenu}-${menuKey}`}
+          className="container min-h-full py-10 lg:py-20"
+        >
+          {activeMenu && (
+            <div className="grid min-h-full grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-0">
+              <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:pe-8">
+                <h2 className="menu-item-in text-2xl font-bold motion-reduce:animate-none sm:text-3xl lg:text-4xl">
+                  {activeMenu}
+                </h2>
               </div>
+
+              <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
+                <ul className="space-y-4 sm:space-y-5">
+                  {navMenus[activeMenu].map(({ label, to }, index) => (
+                    <li
+                      key={label}
+                      style={{ animationDelay: `${index * 45}ms` }}
+                      className="menu-item-in motion-reduce:animate-none"
+                    >
+                      <Link
+                        to={to}
+                        onClick={closeMenu}
+                        className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="hidden lg:col-span-2 lg:block" aria-hidden="true" />
             </div>
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </div>
     </div>
   );
 };

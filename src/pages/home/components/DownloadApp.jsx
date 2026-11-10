@@ -71,7 +71,7 @@ const DownloadApp = () => {
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-6">
           <div className="flex flex-col items-center text-center">
             <h2 className="text-4xl font-bold leading-tight text-white sm:text-5xl">
-              حمل تطبيق إثراء
+                    تجول في متجر وسام
             </h2>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
