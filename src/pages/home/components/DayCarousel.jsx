@@ -61,7 +61,7 @@ const DayCarousel = ({ count = 7 }) => {
   const visibleDays = days.slice(startIndex, startIndex + VISIBLE);
 
   return (
-    <div className="flex items-center justify-center gap-4 sm:gap-6">
+    <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-center sm:gap-6">
       <NavButton
         label="الأيام السابقة"
         onClick={() => setStartIndex((current) => Math.max(0, current - 1))}
@@ -70,7 +70,7 @@ const DayCarousel = ({ count = 7 }) => {
         <ChevronRight className="size-5" aria-hidden="true" />
       </NavButton>
 
-      <div className="flex items-center gap-3 sm:gap-4">
+      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-1 sm:flex-none sm:gap-4 sm:overflow-visible sm:py-0">
         {visibleDays.map((day) => {
           const index = days.indexOf(day);
           return (

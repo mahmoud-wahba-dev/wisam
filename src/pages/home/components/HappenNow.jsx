@@ -28,13 +28,13 @@ const HappenNow = () => {
         </div>
 
         {/* ── Full filter row: period chips + day picker ── */}
-        <div className="flex items-center justify-between gap-4 mb-10">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
 
           {/* Left side — day picker with navigation arrows */}
           <DayCarousel />
 
           {/* Right side — period filter chips (reusing DayCard!) */}
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             {PERIOD_FILTERS.map((filter) => (
               <DayCard
                 key={filter.id}

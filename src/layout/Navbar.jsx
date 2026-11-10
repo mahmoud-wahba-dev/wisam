@@ -60,13 +60,13 @@ const Navbar = () => {
     <div className="navbar gap-7 absolute top-0 left-0 z-50 w-full">
       <div className="relative z-50">
         <Link to={"/"} className="btn btn-link text-xl" onClick={() => setOpenMenu(null)}>
-          <img src={logo} alt="وسام" className="max-h-20" />
+          <img src={logo} alt="وسام" className="max-h-14 sm:max-h-20" />
         </Link>
       </div>
 
       <div className="hidden lg:block lg:w-1/3" aria-hidden="true" />
 
-      <div className="relative z-50 flex-1 flex-nowrap">
+      <div className="relative z-50 flex flex-1 flex-nowrap items-center justify-end gap-3">
         <ul className="menu menu-horizontal px-1">
           <button
             type="button"

@@ -61,6 +61,15 @@ const ArrowIcon = ({ direction }) => (
   </svg>
 );
 
+// Hero background footage.
+// Drop the final clip at `public/videos/hero.mp4` (and an optional still at
+// `public/videos/hero-poster.jpg`); the CDN copy below is only a fallback so
+// the background keeps working until the local file is in place.
+const HERO_VIDEO_LOCAL = "/videos/hero.mp4";
+const HERO_VIDEO_FALLBACK =
+  "https://www.ithra.com/application/files/8416/9884/3351/drone_1.mp4";
+const HERO_POSTER = "/videos/hero-poster.jpg";
+
 const Hero = () => {
   const [swiper, setSwiper] = useState(null);
   const [atStart, setAtStart] = useState(true);
@@ -73,6 +82,22 @@ const Hero = () => {
 
   return (
     <header className="brand-gradient relative isolate min-h-screen overflow-hidden text-white">
+      {/* Looping background footage, with the brand gradient showing through
+          while the video loads or if it cannot be played. */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={HERO_POSTER}
+        aria-hidden="true"
+        className="absolute inset-0 -z-20 size-full object-cover"
+      >
+        <source src={HERO_VIDEO_LOCAL} type="video/mp4" />
+        <source src={HERO_VIDEO_FALLBACK} type="video/mp4" />
+      </video>
+
       {/* Soft light pools over the brand backdrop */}
       <div
         aria-hidden="true"
@@ -83,7 +108,8 @@ const Hero = () => {
         className="absolute bottom-0 end-0 -z-10 size-[32rem] rounded-full bg-accent/30 blur-[160px]"
       />
 
-      {/* Bottom-half overlay for text legibility */}
+      {/* Side scrim + bottom overlay keep the text legible over the footage */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-l from-secondary/85 via-secondary/35 to-secondary/10" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
 
       <div className="container relative z-10 flex min-h-screen flex-col justify-end pb-10 pt-36 sm:pt-44 lg:pb-16">
