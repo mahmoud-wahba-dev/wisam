@@ -7,6 +7,7 @@ import kid2 from "@/assets/imgs/kids/kid2.webp";
 import kid3 from "@/assets/imgs/kids/kid3.webp";
 import kid4 from "@/assets/imgs/kids/kid4.webp";
 import kid5 from "@/assets/imgs/kids/kid5.webp";
+import { HERO_POSTER, HERO_VIDEO } from "@/data/heroVideo";
 
 const slides = [
   {
@@ -61,13 +62,6 @@ const ArrowIcon = ({ direction }) => (
     <path d={direction === "right" ? "m9 5 7 7-7 7" : "m15 5-7 7 7 7"} />
   </svg>
 );
-
-// Hero background footage: a short, muted looping clip served locally so it has
-// no player UI/controls, loads fast, and works without third-party embeds.
-// The poster covers the first paint and remains the fallback when motion/video
-// is reduced or unavailable.
-const HERO_VIDEO = "/videos/hero-bg-loop.mp4";
-const HERO_POSTER = "/videos/hero-bg-poster.jpg";
 
 const shouldPlayHeroVideo = () => {
   if (typeof window === "undefined") return false;

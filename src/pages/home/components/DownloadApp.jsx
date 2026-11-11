@@ -3,12 +3,12 @@ import { Link } from "react-router";
 import appleImg from "@/assets/imgs/apple-store-ar.svg";
 import gPlayImg from "@/assets/imgs/google-store-ar.svg";
 import phoneFrame from "@/assets/imgs/iphone-arabic.svg";
-import appPreview from "@/assets/videos/app-preview.mp4";
+import { HERO_POSTER, HERO_VIDEO } from "@/data/heroVideo";
 
 /*
  * The phone artwork is a white shell with a transparent screen, and the whole
  * handset sits at a slight angle. The path below is the frame file's own inner
- * contour, so clipping the video with it fits the display exactly — notch,
+ * contour, so clipping the footage with it fits the display exactly — notch,
  * rounded corners and tilt included — at any rendered size.
  */
 const SCREEN_PATH =
@@ -18,33 +18,60 @@ const SCREEN_PATH =
 // Its axis-aligned bounding box is ~480x928, so the foreignObject must be at
 // least that big or the rotation gets clipped at the edges.
 const SCREEN_BOX = { x: 79, y: -87, width: 500, height: 950 };
-const SCREEN_SIZE = { width: 390, height: 900 };
+
+/*
+ * The layer that holds the footage is intentionally larger than the screen
+ * (~520x1000, still centred). The clip path does the cropping, but the content
+ * box has to cover the *whole* tilt-adjusted contour — the screen reaches about
+ * 483px from the centre along its own axis, so a 390x900 box left the top-left
+ * and bottom edges unlit and the dark section background showed through as a
+ * black notch. Anything bigger than the contour is invisible: the frame artwork
+ * paints over it and the clip trims it.
+ */
+const SCREEN_SIZE = { width: 520, height: 1000 };
 
 const DownloadApp = () => {
   const holderRef = useRef(null);
   const videoRef = useRef(null);
-  const [nearViewport, setNearViewport] = useState(
-    () => typeof IntersectionObserver === "undefined"
-  );
+  const [showVideo, setShowVideo] = useState(false);
 
-  // The clip is a few megabytes, so it only starts downloading once the
-  // section is about to be seen.
+  // The clip is shared with the hero, so it is usually already cached. It is
+  // mounted just after the first paint, and the timer is a guarantee: some
+  // browsers delay or never deliver IntersectionObserver callbacks, and the
+  // screen must never stay as a still poster. Playback pauses whenever the
+  // phone leaves the viewport.
   useEffect(() => {
     const node = holderRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") return undefined;
+    const mountTimer = window.setTimeout(() => setShowVideo(true), 600);
+
+    if (!node || typeof IntersectionObserver === "undefined") {
+      return () => window.clearTimeout(mountTimer);
+    }
+
+    const reduceMotion = () =>
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setNearViewport(true);
-          observer.disconnect();
+      ([entry]) => {
+        if (entry.isIntersecting) setShowVideo(true);
+
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (entry.isIntersecting && !reduceMotion()) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
         }
       },
       { rootMargin: "400px 0px" }
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(mountTimer);
+      observer.disconnect();
+    };
   }, []);
 
   // Autoplay is the default; users who ask for reduced motion get a still frame.
@@ -55,7 +82,7 @@ const DownloadApp = () => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
     }
-  }, [nearViewport]);
+  }, [showVideo]);
 
   return (
     <section
@@ -126,35 +153,49 @@ const DownloadApp = () => {
                   clipPath="url(#phone-screen-clip)"
                 >
                   {/*
-                   * The box is wider than the screen so the rotated content has
-                   * room to breathe; the clipPath does the actual cropping.
+                   * The layer is bigger than the screen so the rotated content
+                   * covers the whole contour; the clipPath does the actual
+                   * cropping. Centring is explicit (translate + rotate) so the
+                   * overflow can never settle to one side. The poster sits
+                   * behind the video so the screen is never black — not before
+                   * the video mounts, and not while it buffers.
                    */}
                   <div
                     xmlns="http://www.w3.org/1999/xhtml"
-                    className="flex items-center justify-center bg-black"
+                    className="relative overflow-hidden"
                     style={{
                       width: `${SCREEN_BOX.width}px`,
                       height: `${SCREEN_BOX.height}px`,
+                      backgroundImage: `url(${HERO_POSTER})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                     }}
                   >
                     <div
-                      className="overflow-hidden bg-black"
+                      className="absolute left-1/2 top-1/2 overflow-hidden"
                       style={{
                         width: `${SCREEN_SIZE.width}px`,
                         height: `${SCREEN_SIZE.height}px`,
-                        transform: "rotate(-6.6deg)",
+                        transform: "translate(-50%, -50%) rotate(-6.6deg)",
                       }}
                     >
-                      {nearViewport && (
+                      <img
+                        src={HERO_POSTER}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 size-full object-cover"
+                      />
+                      {showVideo && (
                         <video
                           ref={videoRef}
-                          src={appPreview}
-                          className="h-full w-full object-cover"
+                          src={HERO_VIDEO}
+                          poster={HERO_POSTER}
+                          className="absolute inset-0 size-full object-cover"
                           autoPlay
                           muted
                           loop
                           playsInline
-                          preload="auto"
+                          preload="metadata"
                         />
                       )}
                     </div>
