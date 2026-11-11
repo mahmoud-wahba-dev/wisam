@@ -62,29 +62,19 @@ const ArrowIcon = ({ direction }) => (
   </svg>
 );
 
-// Hero background footage: the society's own YouTube video, embedded muted and
-// looped, scaled to cover the hero. The still frame underneath covers the first
-// paint, so the heavy third-party player is only attached once the page is idle.
-// `controls=0` plus the pointer-events-none wrapper keep every player control
-// hidden — the clip is purely decorative.
-const HERO_VIDEO_ID = "WhyGXUakD84";
-const HERO_VIDEO_EMBED =
-  `https://www.youtube-nocookie.com/embed/${HERO_VIDEO_ID}` +
-  `?autoplay=1&mute=1&loop=1&playlist=${HERO_VIDEO_ID}` +
-  "&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3" +
-  "&disablekb=1&fs=0&cc_load_policy=0&autohide=1&enablejsapi=1";
-const HERO_POSTER = `https://i.ytimg.com/vi/${HERO_VIDEO_ID}/maxresdefault.jpg`;
+// Hero background footage: a short, muted looping clip served locally so it has
+// no player UI/controls, loads fast, and works without third-party embeds.
+// The poster covers the first paint and remains the fallback when motion/video
+// is reduced or unavailable.
+const HERO_VIDEO = "/videos/hero-bg-loop.mp4";
+const HERO_POSTER = "/videos/hero-bg-poster.jpg";
 
-// Skip the player entirely when it would cost more than it gives: reduced
-// motion, data-saver, slow networks, or small screens (the poster still shows
-// the same frame, and the video is decorative there).
-const skipHeroVideo = () => {
-  if (typeof window === "undefined") return true;
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return true;
-  if (window.matchMedia?.("(max-width: 480px)").matches) return true;
+const shouldPlayHeroVideo = () => {
+  if (typeof window === "undefined") return false;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return false;
   const connection = navigator.connection;
-  if (connection?.saveData) return true;
-  return /(^|-)2g$/.test(connection?.effectiveType ?? "");
+  if (connection?.saveData) return false;
+  return !/(^|-)2g$/.test(connection?.effectiveType ?? "");
 };
 
 const Hero = () => {
@@ -92,55 +82,29 @@ const Hero = () => {
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [videoMounted, setVideoMounted] = useState(false);
-  const [videoVisible, setVideoVisible] = useState(true);
+  const [showVideo] = useState(shouldPlayHeroVideo);
   const headerRef = useRef(null);
-  const frameRef = useRef(null);
+  const videoRef = useRef(null);
 
-  // Attach the YouTube player only once the browser is idle, so the poster and
-  // the hero copy paint first and the third-party player never blocks the LCP.
-  useEffect(() => {
-    if (skipHeroVideo()) return;
-    let idleId;
-    let timeoutId;
-    if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(() => setVideoMounted(true), {
-        timeout: 2500,
-      });
-    } else {
-      timeoutId = window.setTimeout(() => setVideoMounted(true), 1000);
-    }
-    return () => {
-      if (idleId) window.cancelIdleCallback(idleId);
-      if (timeoutId) window.clearTimeout(timeoutId);
-    };
-  }, []);
-
-  // Pause the clip while the hero is off-screen: a playing player keeps
-  // decoding video even when nobody can see it.
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-    frame.contentWindow?.postMessage(
-      JSON.stringify({
-        event: "command",
-        func: videoVisible ? "playVideo" : "pauseVideo",
-        args: [],
-      }),
-      "*",
-    );
-  }, [videoVisible, videoMounted]);
-
+  // Pause the decorative clip when the hero is off-screen to avoid needless
+  // decoding; resume when it comes back into view.
   useEffect(() => {
     const element = headerRef.current;
-    if (!element || !("IntersectionObserver" in window)) return;
+    const video = videoRef.current;
+    if (!element || !video || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setVideoVisible(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
       { threshold: 0.01 },
     );
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [showVideo]);
 
   const syncNavigation = (instance) => {
     setAtStart(instance.isBeginning);
@@ -157,12 +121,12 @@ const Hero = () => {
           floating carousel below can extend beyond the hero edge. */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         {/* Cheap radial pools instead of 160px CSS blurs — same softness
-            without the per-frame paint cost, and hidden under the poster. */}
+            without the per-frame paint cost, and hidden under the footage. */}
         <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-[radial-gradient(circle,var(--color-primary),transparent_70%)] opacity-25" />
         <div className="absolute bottom-0 end-0 size-[32rem] rounded-full bg-[radial-gradient(circle,var(--color-accent),transparent_70%)] opacity-25" />
 
         {/* Still frame — covers the first paint and doubles as the fallback
-            when the player is skipped or cannot autoplay. */}
+            when motion/video is reduced or playback is unavailable. */}
         <img
           src={HERO_POSTER}
           alt=""
@@ -172,20 +136,23 @@ const Hero = () => {
           className="absolute inset-0 size-full select-none object-cover"
         />
 
-        {/* 16:9 iframe scaled to cover the hero and over-cropped so YouTube's own
-            UI (title/gradient/bars) stays outside the clipped area. controls=0 and
-            pointer-events-none keep it non-interactive; this is purely decorative. */}
-        {videoMounted && (
-          <iframe
-            ref={frameRef}
-            src={HERO_VIDEO_EMBED}
-            title="فيديو وسام"
-            aria-hidden="true"
-            tabIndex={-1}
-            allow="autoplay; encrypted-media; picture-in-picture"
-            referrerPolicy="strict-origin-when-cross-origin"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[76vw] min-h-[135%] w-[135vw] min-w-[240vh] -translate-x-1/2 -translate-y-1/2 border-0"
-          />
+        {/* Native, muted looping clip — no controls/UI, served locally for
+            performance. Paused automatically when scrolled out of view. */}
+        {showVideo && (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={HERO_POSTER}
+            disablePictureInPicture
+            disableRemotePlayback
+            className="pointer-events-none absolute inset-0 size-full object-cover"
+          >
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
         )}
 
         {/* Side scrim + bottom overlay keep the text legible over the footage */}
