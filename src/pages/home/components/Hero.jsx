@@ -158,14 +158,19 @@ const Hero = () => {
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Heading, search and CTA */}
           <div className="relative z-20 lg:col-span-7">
-            <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1
+              data-aos="fade-up"
+              className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl"
+            >
               ألهم عالمك
             </h1>
-            <p className="mt-2 text-lg text-white/85 sm:text-xl">
+            <p data-aos="fade-up" data-aos-delay="100" className="mt-2 text-lg text-white/85 sm:text-xl">
               وسام، عطاءٌ يمتد
             </p>
 
             <form
+              data-aos="fade-up"
+              data-aos-delay="200"
               role="search"
               onSubmit={(event) => event.preventDefault()}
               className="relative mt-8 w-full max-w-lg"
@@ -188,7 +193,7 @@ const Hero = () => {
               </button>
             </form>
 
-            <div className="mt-6">
+            <div data-aos="fade-up" data-aos-delay="300" className="mt-6">
               <Link
                 to="/programs"
                 className="btn btn-primary h-14 rounded-full px-7 text-base font-bold"
@@ -200,7 +205,7 @@ const Hero = () => {
           </div>
 
           {/* Cards slider */}
-          <div className="relative z-10 min-w-0 lg:col-span-5">
+          <div data-aos="fade-left" data-aos-delay="200" className="relative z-10 min-w-0 lg:col-span-5">
             <Swiper
               onSwiper={(instance) => {
                 setSwiper(instance);

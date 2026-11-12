@@ -8,13 +8,13 @@ const OurProducts = () => {
     <section className="bg-accent py-16">
       <div className="container">
         <div className="mb-10 flex items-center justify-between">
-          <h2 className="text-5xl font-bold text-white">منتجاتنا</h2>
-          <Link to="/products" className="btn btn-primary">
+          <h2 data-aos="fade-right" className="text-5xl font-bold text-white">منتجاتنا</h2>
+          <Link data-aos="fade-left" to="/products" className="btn btn-primary">
             اكتشف منتجاتنا
           </Link>
         </div>
 
-        <article className="flex max-w-sm flex-col overflow-hidden rounded-3xl bg-white text-secondary shadow-lg shadow-black/10">
+        <article data-aos="zoom-in-up" data-aos-delay="150" className="flex max-w-sm flex-col overflow-hidden rounded-3xl bg-white text-secondary shadow-lg shadow-black/10">
           <img
             src={featured.image}
             alt={featured.title}

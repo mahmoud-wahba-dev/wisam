@@ -14,7 +14,7 @@ const News = () => {
   return (
     <section className="brand-gradient py-16">
       <div className="container">
-        <div className="mb-10 flex items-center justify-between gap-4">
+        <div data-aos="fade-up" className="mb-10 flex items-center justify-between gap-4">
           <h2 className="text-4xl font-bold text-white sm:text-5xl">
             أخبار الجمعية
           </h2>
@@ -43,9 +43,11 @@ const News = () => {
           }}
           className="mySwiper"
         >
-          {newsItems.map((item) => (
+          {newsItems.map((item, index) => (
             <SwiperSlide key={item.id} className="!h-auto flex">
               <Link
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
                 to={`/media-center/news/${item.id}`}
                 className="group flex w-full flex-col"
               >

@@ -125,7 +125,7 @@ const Marafeqna = () => {
 
       <div className="container relative z-10 flex justify-start">
         <div>
-          <h2 className="mb-8 text-4xl font-bold sm:text-5xl lg:mb-10">برامجنا</h2>
+          <h2 data-aos="fade-right" className="mb-8 text-4xl font-bold sm:text-5xl lg:mb-10">برامجنا</h2>
 
           <div dir="ltr" className="grid w-fit grid-cols-3 gap-3 sm:gap-5 lg:gap-9 xl:gap-12">
             {facilities.map(({ key, name, title, subtitle, icon: Icon }, index) => {
@@ -134,6 +134,8 @@ const Marafeqna = () => {
               return (
                 <button
                   key={key}
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 60}
                   type="button"
                   aria-label={name}
                   aria-pressed={isActive}

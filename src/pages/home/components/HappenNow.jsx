@@ -22,13 +22,13 @@ const HappenNow = () => {
       <div className="container">
 
         {/* ── Title row ── */}
-        <div className="flex items-center justify-between mb-10">
+        <div data-aos="fade-up" className="flex items-center justify-between mb-10">
           <h2 className="font-bold text-white text-5xl">يحدث الآن</h2>
           <Link to="/programs" className="btn btn-primary">اكتشف البرامج</Link>
         </div>
 
         {/* ── Full filter row: period chips + day picker ── */}
-        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+        <div data-aos="fade-up" data-aos-delay="100" className="mb-10 flex flex-wrap items-center justify-between gap-4">
 
           {/* Left side — day picker with navigation arrows */}
           <DayCarousel />

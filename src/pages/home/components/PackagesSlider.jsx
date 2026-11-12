@@ -106,6 +106,8 @@ const PackagesSlider = () => {
           return (
             <div
               key={pkg.id}
+              data-aos="fade-left"
+              data-aos-delay={index * 100}
               className={`overflow-hidden rounded-3xl transition-colors duration-300 ${
                 isActive
                   ? "bg-white text-secondary"
@@ -138,7 +140,7 @@ const PackagesSlider = () => {
       </div>
 
       {/* Desktop: glass panel with a single white card sliding between slots */}
-      <div className="relative hidden rounded-4xl bg-white/5 p-4 ring-1 ring-white/10 backdrop-blur-md md:block">
+      <div data-aos="fade-up" className="relative hidden rounded-4xl bg-white/5 p-4 ring-1 ring-white/10 backdrop-blur-md md:block">
         <div className="relative h-80">
           <div className="flex h-full">
             {packages.map((pkg, index) => {
@@ -147,6 +149,8 @@ const PackagesSlider = () => {
               return (
                 <button
                   key={pkg.id}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 80}
                   type="button"
                   onClick={() => select(index)}
                   aria-pressed={isActive}

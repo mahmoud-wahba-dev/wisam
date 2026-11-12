@@ -35,9 +35,15 @@ const HappenNowSlider = () => {
       >
         {/* !h-auto + flex makes every slide stretch to the tallest card, so
             cards with fewer meta rows still line up at the bottom. */}
-        {programs.map((program) => (
+        {programs.map((program, index) => (
           <SwiperSlide key={program.id} className="!h-auto flex">
-            <ProgramCard {...program} />
+            <div
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+              className="flex w-full"
+            >
+              <ProgramCard {...program} />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

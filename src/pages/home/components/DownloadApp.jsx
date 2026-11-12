@@ -97,11 +97,11 @@ const DownloadApp = () => {
       <div className="container relative">
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-6">
           <div className="flex flex-col items-center text-center">
-            <h2 className="text-4xl font-bold leading-tight text-white sm:text-5xl">
+            <h2 data-aos="fade-right" className="text-4xl font-bold leading-tight text-white sm:text-5xl">
                     تجول في متجر وسام
             </h2>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div data-aos="fade-up" data-aos-delay="150" className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 to="/"
                 aria-label="تحميل التطبيق من متجر آبل"
@@ -128,7 +128,7 @@ const DownloadApp = () => {
             </div>
           </div>
 
-          <div className="relative flex justify-center lg:self-end">
+          <div data-aos="fade-left" data-aos-delay="200" className="relative flex justify-center lg:self-end">
             <div
               ref={holderRef}
               className="relative w-64 sm:w-80 lg:-mb-28 lg:w-[26rem] xl:-mb-36 xl:w-[32rem]"
