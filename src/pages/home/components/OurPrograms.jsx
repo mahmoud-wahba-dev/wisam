@@ -131,21 +131,20 @@ const Marafeqna = () => {
             {facilities.map(({ key, name, title, subtitle, icon: Icon }, index) => {
               const isActive = index === activeIndex;
 
+              // AOS lives on the wrapper: React rewriting the button's className would strip `aos-animate`.
               return (
+                <div key={key} data-aos="zoom-in" data-aos-delay={index * 60}>
                 <button
-                  key={key}
-                  data-aos="zoom-in"
-                  data-aos-delay={index * 60}
                   type="button"
                   aria-label={name}
                   aria-pressed={isActive}
                   onMouseEnter={() => setActiveIndex(index)}
                   onFocus={() => setActiveIndex(index)}
                   onClick={() => setActiveIndex(index)}
-                  className={`flex size-24 flex-col items-center justify-center gap-2 rounded-3xl border-2 p-2 text-center transition-all duration-300 sm:size-28 sm:gap-3 xl:size-32 ${
+                  className={`flex size-24 flex-col items-center justify-center gap-2 rounded-3xl border-2 p-2 text-center transition-colors duration-300 sm:size-28 sm:gap-3 xl:size-32 ${
                     isActive
-                      ? "scale-105 border-white bg-primary text-primary-content shadow-2xl shadow-primary/40"
-                      : "border-white/80 bg-white/10 text-white backdrop-blur-md hover:scale-105 hover:bg-white/20"
+                      ? "border-white bg-primary text-primary-content shadow-2xl shadow-primary/40"
+                      : "border-white/80 bg-white/10 text-white backdrop-blur-md hover:bg-white/20"
                   } focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/60`}
                 >
                   <Icon className="size-7 sm:size-8" strokeWidth={1.5} aria-hidden="true" />
@@ -159,6 +158,7 @@ const Marafeqna = () => {
                     )}
                   </span>
                 </button>
+                </div>
               );
             })}
           </div>

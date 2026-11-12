@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, ScrollRestoration, useLocation } from "react-router";
 import AOS from "aos";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
@@ -27,6 +27,7 @@ const MasterLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <ScrollRestoration />
     </>
   );
 };

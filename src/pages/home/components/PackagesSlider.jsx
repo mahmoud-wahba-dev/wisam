@@ -104,10 +104,8 @@ const PackagesSlider = () => {
           const isActive = index === active;
 
           return (
+            <div key={pkg.id} data-aos="fade-left" data-aos-delay={index * 100}>
             <div
-              key={pkg.id}
-              data-aos="fade-left"
-              data-aos-delay={index * 100}
               className={`overflow-hidden rounded-3xl transition-colors duration-300 ${
                 isActive
                   ? "bg-white text-secondary"
@@ -135,6 +133,7 @@ const PackagesSlider = () => {
                 </div>
               </div>
             </div>
+            </div>
           );
         })}
       </div>
@@ -147,10 +146,13 @@ const PackagesSlider = () => {
               const isActive = index === active;
 
               return (
-                <button
+                <div
                   key={pkg.id}
                   data-aos="fade-up"
                   data-aos-delay={index * 80}
+                  className="flex flex-1"
+                >
+                <button
                   type="button"
                   onClick={() => select(index)}
                   aria-pressed={isActive}
@@ -165,6 +167,7 @@ const PackagesSlider = () => {
                     {pkg.title}
                   </span>
                 </button>
+                </div>
               );
             })}
           </div>

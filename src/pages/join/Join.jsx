@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Briefcase, HeartHandshake, Mail, Users } from "lucide-react";
 import SectionPage from "@/pages/section/SectionPage";
+import { CardBody, CardContainer, CardItem } from "@/componets/ui/3d-card";
 
 const paths = [
   {
@@ -50,34 +51,36 @@ const Join = () => {
     >
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {paths.map(({ key, title, description, icon: Icon, to, href, cta }) => (
-          <article
-            key={key}
-            className="flex flex-col rounded-3xl bg-white p-6 text-secondary shadow-lg shadow-black/15 sm:p-8"
-          >
-            <span className="grid size-12 place-items-center rounded-full bg-primary/10 text-primary">
-              <Icon className="size-6" strokeWidth={1.8} aria-hidden="true" />
-            </span>
+          <CardContainer key={key} className="h-full">
+            <CardBody
+              as="article"
+              className="flex w-full flex-col rounded-3xl bg-white p-6 text-secondary shadow-lg shadow-black/15 sm:p-8"
+            >
+              <CardItem
+                as="span"
+                translateZ={50}
+                className="grid size-12 place-items-center rounded-full bg-primary/10 text-primary"
+              >
+                <Icon className="size-6" strokeWidth={1.8} aria-hidden="true" />
+              </CardItem>
 
-            <h2 className="mt-5 text-2xl font-extrabold leading-snug">
-              {title}
-            </h2>
-            <p className="mt-3 flex-1 text-sm leading-relaxed text-secondary/75">
-              {description}
-            </p>
+              <CardItem as="h2" translateZ={40} className="mt-5 text-2xl font-extrabold leading-snug">
+                {title}
+              </CardItem>
+              <CardItem as="p" translateZ={25} className="mt-3 flex-1 text-sm leading-relaxed text-secondary/75">
+                {description}
+              </CardItem>
 
-            {to ? (
-              <Link to={to} className="btn btn-primary mt-6 w-fit rounded-full px-6">
-                {cta}
-              </Link>
-            ) : (
-              <a
-                href={href}
+              <CardItem
+                as={to ? Link : "a"}
+                translateZ={50}
+                {...(to ? { to } : { href })}
                 className="btn btn-primary mt-6 w-fit rounded-full px-6"
               >
                 {cta}
-              </a>
-            )}
-          </article>
+              </CardItem>
+            </CardBody>
+          </CardContainer>
         ))}
       </div>
     </SectionPage>

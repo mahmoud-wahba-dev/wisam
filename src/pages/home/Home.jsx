@@ -5,6 +5,8 @@ import Marafeqna from "./components/OurPrograms";
 import News from "./components/News";
 import Packages from "./components/Packages";
 import DownloadApp from "./components/DownloadApp";
+import Stats from "./components/Stats";
+import Partners from "./components/Partners";
 
 const Home = () => {
   return (
@@ -13,9 +15,11 @@ const Home = () => {
       <Marafeqna />
       <HappenNow />
       <OurProducts />
+      <Stats />
       <Packages />
       <News />
       <DownloadApp />
+      <Partners />
     </>
   );
 };

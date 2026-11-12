@@ -10,6 +10,7 @@ import kid9 from "@/assets/imgs/kids/kid9.webp";
 export const programs = [
   {
     id: "child-saturday",
+    quarter: 1,
     title: "سبت الطفل",
     image: kid6,
     tags: [{ label: "أطفال" }],
@@ -22,6 +23,7 @@ export const programs = [
   },
   {
     id: "wind-energy",
+    quarter: 1,
     title: "طاقة الرياح",
     image: kid7,
     tags: [{ label: "نشاط", tone: "cool" }],
@@ -34,6 +36,7 @@ export const programs = [
   },
   {
     id: "library-workshop",
+    quarter: 2,
     title: "ورشة عمل في المكتبة",
     image: kid8,
     tags: [{ label: "نشاط", tone: "cool" }, { label: "المكتبة" }],
@@ -46,6 +49,7 @@ export const programs = [
   },
   {
     id: "cat-in-a-box",
+    quarter: 2,
     title: "قطة في صندوق",
     image: kid9,
     tags: [{ label: "نشاط", tone: "cool" }, { label: "أطفال" }],
@@ -58,6 +62,7 @@ export const programs = [
   },
   {
     id: "craft-session",
+    quarter: 3,
     title: "ورشة الحرف اليدوية",
     image: kid1,
     tags: [{ label: "أطفال" }],
@@ -70,6 +75,7 @@ export const programs = [
   },
   {
     id: "idea-lab",
+    quarter: 3,
     title: "مختبر الأفكار",
     image: kid2,
     tags: [{ label: "نشاط", tone: "cool" }],

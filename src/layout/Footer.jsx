@@ -1,18 +1,15 @@
 import { Link } from "react-router";
 import { navSections } from "@/data/siteNav";
 
-const [aboutSection, governanceSection, reportsSection, mediaSection] =
-  navSections;
+const mediaSection = navSections.find((section) => section.basePath === "/media-center");
 
 const openingHours = [
-  { day: "الأحد", time: "8 صباحًا – 4 مساءً" },
-  { day: "الاثنين", time: "8 صباحًا – 4 مساءً" },
-  { day: "الثلاثاء", time: "8 صباحًا – 4 مساءً" },
-  { day: "الأربعاء", time: "8 صباحًا – 4 مساءً" },
-  { day: "الخميس", time: "8 صباحًا – 4 مساءً" },
-  { day: "الجمعة", time: "مغلق", closed: true },
-  { day: "السبت", time: "مغلق", closed: true },
+  { day: "الأحد – الأربعاء", time: "9 صباحًا – 4 مساءً" },
+  { day: "الخميس – السبت", time: "مغلق", closed: true },
 ];
+
+// TODO: replace with the society's exact address or coordinates.
+const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
 
 const socials = [
   {
@@ -97,9 +94,66 @@ const Footer = () => {
   return (
     <footer className="footer-gradient relative text-white">
       <div className="container py-16 lg:py-20">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-14 xl:gap-24">
-          {/* النشرة الإخبارية + التواصل + أوقات العمل */}
-          <div className="order-1 space-y-10 md:col-span-2 lg:order-3 lg:col-span-1">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:gap-14">
+          <nav aria-label="المركز الإعلامي">
+            <FooterColumn section={mediaSection} />
+          </nav>
+
+          <div className="space-y-10">
+            <div>
+              <h3 className="mb-5 text-lg font-bold sm:text-xl">أوقات العمل</h3>
+              <dl className="space-y-3">
+                {openingHours.map(({ day, time, closed }) => (
+                  <div key={day} className="flex flex-col gap-1">
+                    <dt className="text-sm text-white/75">{day}</dt>
+                    <dd
+                      className={
+                        closed
+                          ? "text-sm text-white/75"
+                          : "text-sm font-semibold text-amber-light"
+                      }
+                    >
+                      {time}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div>
+              <h3 className="mb-5 text-lg font-bold sm:text-xl">معلومات الاتصال</h3>
+              <dl className="space-y-4 text-sm sm:text-base">
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <dt className="text-white/75">هاتف:</dt>
+                  <dd>
+                    {/* TODO: replace with the society's real phone number */}
+                    <a
+                      href="tel:+966110000000"
+                      dir="ltr"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
+                    >
+                      +966 11 000 0000
+                    </a>
+                  </dd>
+                </div>
+
+                <div>
+                  <dt className="mb-1 text-white/75">خدمة العملاء:</dt>
+                  <dd>
+                    <a
+                      href="mailto:info@wisam.org.sa"
+                      dir="ltr"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
+                    >
+                      info@wisam.org.sa
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div className="space-y-10">
             <div>
               <h2 className="mb-6 text-lg font-bold sm:text-xl">اشترك في النشرة الإخبارية</h2>
 
@@ -178,102 +232,26 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div>
-              <h3 className="mb-5 text-lg font-bold sm:text-xl">أوقات العمل</h3>
-              <dl className="max-w-md space-y-3">
-                {openingHours.map(({ day, time, closed }) => (
-                  <div key={day} className="flex items-center justify-between gap-4">
-                    <dt className="text-sm text-white/75">{day}</dt>
-                    <dd
-                      className={
-                        closed
-                          ? "text-sm text-white/75"
-                          : "text-sm font-semibold text-amber-light"
-                      }
-                    >
-                      {time}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <div>
-              <h3 className="mb-5 text-lg font-bold sm:text-xl">الموقع</h3>
-              <address className="text-sm not-italic leading-relaxed text-white/80 sm:text-base">
-                المملكة العربية السعودية
-              </address>
-            </div>
-
-            <div>
-              <h3 className="mb-5 text-lg font-bold sm:text-xl">معلومات الاتصال</h3>
-              <dl className="space-y-4 text-sm sm:text-base">
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <dt className="text-white/75">هاتف:</dt>
-                  <dd>
-                    {/* TODO: replace with the society's real phone number */}
-                    <a
-                      href="tel:+966110000000"
-                      dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      +966 11 000 0000
-                    </a>
-                  </dd>
-                </div>
-
-                <div>
-                  <dt className="mb-1 text-white/75">خدمة العملاء:</dt>
-                  <dd>
-                    <a
-                      href="mailto:info@wisam.org.sa"
-                      dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      info@wisam.org.sa
-                    </a>
-                  </dd>
-                </div>
-
-                <div>
-                  <dt className="mb-1 text-white/75">المركز الإعلامي:</dt>
-                  <dd>
-                    <a
-                      href="mailto:media@wisam.org.sa"
-                      dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      media@wisam.org.sa
-                    </a>
-                  </dd>
-                </div>
-
-                <div>
-                  <dt className="mb-1 text-white/75">للشراكات والتعاون:</dt>
-                  <dd>
-                    <a
-                      href="mailto:relations@wisam.org.sa"
-                      dir="ltr"
-                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
-                    >
-                      relations@wisam.org.sa
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </div>
           </div>
 
-          {/* روابط الجمعية */}
-          <nav aria-label="روابط الجمعية" className="order-2 space-y-12 lg:order-1">
-            <FooterColumn section={aboutSection} />
-            <FooterColumn section={governanceSection} />
-          </nav>
-
-          <nav aria-label="التقارير والمركز الإعلامي" className="order-3 space-y-12 lg:order-2">
-            <FooterColumn section={reportsSection} />
-            <FooterColumn section={mediaSection} />
-          </nav>
+          <div>
+            <h3 className="mb-5 text-lg font-bold sm:text-xl">الموقع</h3>
+            <iframe
+              src={`https://www.google.com/maps?q=${MAP_QUERY}&output=embed`}
+              title="موقع جمعية وسام على الخريطة"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-56 w-full rounded-3xl border-0 bg-white/5"
+            />
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-block text-sm text-white/75 transition-colors hover:text-amber-light"
+            >
+              افتح في خرائط Google
+            </a>
+          </div>
         </div>
       </div>
 

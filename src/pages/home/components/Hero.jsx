@@ -8,6 +8,7 @@ import kid3 from "@/assets/imgs/kids/kid3.webp";
 import kid4 from "@/assets/imgs/kids/kid4.webp";
 import kid5 from "@/assets/imgs/kids/kid5.webp";
 import { HERO_POSTER, HERO_VIDEO } from "@/data/heroVideo";
+import { CardBody, CardContainer, CardItem } from "@/componets/ui/3d-card";
 
 const slides = [
   {
@@ -229,33 +230,44 @@ const Hero = () => {
                 const isActive = index === activeIndex;
                 return (
                   <SwiperSlide key={to}>
-                    <Link
-                      to={to}
-                      className="group relative flex aspect-9/16 w-full flex-col justify-end overflow-hidden rounded-3xl bg-secondary"
-                    >
-                      <img
-                        src={image}
-                        alt=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div
-                        className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t ${overlay} to-transparent`}
-                      />
-                      {/* Inactive/slid cards stay visible but sit under a dim
-                          layer so the active card reads clearly. */}
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 z-20 bg-secondary/55 transition-opacity duration-500"
-                        style={{ opacity: isActive ? 0 : 1 }}
-                      />
-                      <div className="relative z-30 p-6 pb-7 text-center">
-                        <p className="text-lg font-bold text-white sm:text-xl">
-                          {title}
-                        </p>
-                      </div>
-                    </Link>
+                    <CardContainer>
+                      <CardBody
+                        as={Link}
+                        to={to}
+                        className="group relative flex aspect-9/16 w-full flex-col justify-end rounded-3xl bg-secondary/80 ring-1 ring-white/15"
+                      >
+                        {/* The artwork floats off the card on hover, like Aceternity's 3D card demo. */}
+                        <CardItem
+                          translateZ={70}
+                          rotateX={10}
+                          rotateZ={-5}
+                          className="absolute inset-0 overflow-hidden rounded-3xl group-hover:shadow-2xl group-hover:shadow-black/50"
+                        >
+                          <img
+                            src={image}
+                            alt=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
+                          <div
+                            className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t ${overlay} to-transparent`}
+                          />
+                          {/* Inactive/slid cards stay visible but sit under a dim
+                              layer so the active card reads clearly. */}
+                          <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-0 bg-secondary/55 transition-opacity duration-500"
+                            style={{ opacity: isActive ? 0 : 1 }}
+                          />
+                        </CardItem>
+                        <CardItem translateZ={110} className="relative w-full p-6 pb-7 text-center">
+                          <p className="text-lg font-bold text-white drop-shadow-lg sm:text-xl">
+                            {title}
+                          </p>
+                        </CardItem>
+                      </CardBody>
+                    </CardContainer>
                   </SwiperSlide>
                 );
               })}

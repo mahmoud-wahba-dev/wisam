@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
-import appleImg from "@/assets/imgs/apple-store-ar.svg";
-import gPlayImg from "@/assets/imgs/google-store-ar.svg";
 import phoneFrame from "@/assets/imgs/iphone-arabic.svg";
 import { HERO_POSTER, HERO_VIDEO } from "@/data/heroVideo";
+
+// TODO: replace with the society's own Salla store link.
+const SALLA_STORE_URL = "https://salla.sa/";
+
+// Salla mark (Simple Icons).
+const SallaLogo = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+    <path d="M18.862 13.439a1.27 1.27 0 0 0-.81-.555 1.27 1.27 0 0 0-.964.18c-3.422 2.231-6.75 2.231-10.178 0a1.27 1.27 0 0 0-.964-.18 1.283 1.283 0 0 0-.434 2.327c2.142 1.394 4.326 2.1 6.49 2.1 2.166 0 4.348-.706 6.488-2.102a1.27 1.27 0 0 0 .555-.81 1.27 1.27 0 0 0-.18-.964zm5.103 2.82-1.171-9.764a5.24 5.24 0 0 0-5.2-4.614H6.406a5.236 5.236 0 0 0-5.198 4.612l-1.17 9.766a5.235 5.235 0 0 0 5.198 5.86h13.529a5.238 5.238 0 0 0 5.198-5.86zm-3.21 2.4c-.532.6-1.265.929-2.066.929H5.311c-.801 0-1.536-.33-2.066-.929a2.73 2.73 0 0 1-.676-2.16l1.157-9.657A2.764 2.764 0 0 1 6.468 4.41h11.064a2.765 2.765 0 0 1 2.742 2.432l1.157 9.656a2.72 2.72 0 0 1-.676 2.161" />
+  </svg>
+);
 
 /*
  * The phone artwork is a white shell with a transparent screen, and the whole
@@ -102,29 +109,20 @@ const DownloadApp = () => {
             </h2>
 
             <div data-aos="fade-up" data-aos-delay="150" className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                to="/"
-                aria-label="تحميل التطبيق من متجر آبل"
-                className="inline-flex items-center rounded-full bg-white px-4 py-2.5 shadow-xl shadow-black/30 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
+              <a
+                href={SALLA_STORE_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-3 rounded-full bg-white py-2 ps-2 pe-6 text-secondary shadow-xl shadow-black/30 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
               >
-                <img
-                  src={appleImg}
-                  alt="تحميل من App Store"
-                  className="h-9 w-auto sm:h-10"
-                />
-              </Link>
-
-              <Link
-                to="/"
-                aria-label="تحميل التطبيق من متجر جوجل"
-                className="inline-flex items-center rounded-full bg-white px-4 py-2.5 shadow-xl shadow-black/30 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-secondary"
-              >
-                <img
-                  src={gPlayImg}
-                  alt="تحميل من Google Play"
-                  className="h-9 w-auto sm:h-10"
-                />
-              </Link>
+                <span className="grid size-11 place-items-center rounded-full bg-[#004D5A] text-[#BAF3E6] sm:size-12">
+                  <SallaLogo className="size-6 sm:size-7" />
+                </span>
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-xs text-secondary/70">تسوّق الآن عبر</span>
+                  <span className="text-lg font-extrabold">متجرنا على سلة</span>
+                </span>
+              </a>
             </div>
           </div>
 

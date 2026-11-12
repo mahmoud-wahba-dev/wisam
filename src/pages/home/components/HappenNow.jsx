@@ -1,55 +1,59 @@
 import { useState } from "react";
-import HappenNowSlider from "@/componets/slider/HappenNowSlider";
-import DayCarousel from "./DayCarousel";
-import DayCard from "./DayCard";
 import { Link } from "react-router";
+import HappenNowSlider from "@/componets/slider/HappenNowSlider";
+import { programs } from "@/data/programs";
 
-// ─── Period filter data ───────────────────────────────────────────────────────
-// DayCard expects a `day` prop shaped like { weekday, day, month }.
-// We reuse the same shape here — weekday = top label, day = bold middle, month = bottom.
-const PERIOD_FILTERS = [
-  { id: "recommended", day: { weekday: "البرامج",        day: "مقترحة لك", month: ""        } },
-  { id: "week",        day: { weekday: "هذا الاسبوع",   day: "7 - 1",     month: "نوفمبر"  } },
-  { id: "next-week",   day: { weekday: "الاسبوع القادم", day: "14 - 8",    month: "نوفمبر"  } },
-  { id: "month",       day: { weekday: "هذا الشهر",     day: "30 - 1",    month: "نوفمبر"  } },
+const QUARTERS = [
+  { id: 1, label: "الربع الأول" },
+  { id: 2, label: "الربع الثاني" },
+  { id: 3, label: "الربع الثالث" },
 ];
 
 const HappenNow = () => {
-  const [activePeriod, setActivePeriod] = useState("recommended");
+  const [activeQuarter, setActiveQuarter] = useState(QUARTERS[0].id);
+  const items = programs.filter((program) => program.quarter === activeQuarter);
 
   return (
     <section id="program" className="bg-accent py-16">
       <div className="container">
-
-        {/* ── Title row ── */}
-        <div data-aos="fade-up" className="flex items-center justify-between mb-10">
-          <h2 className="font-bold text-white text-5xl">يحدث الآن</h2>
+        <div data-aos="fade-up" className="mb-10 flex items-center justify-between">
+          <h2 className="text-5xl font-bold text-white">يحدث الآن</h2>
           <Link to="/programs" className="btn btn-primary">اكتشف البرامج</Link>
         </div>
 
-        {/* ── Full filter row: period chips + day picker ── */}
-        <div data-aos="fade-up" data-aos-delay="100" className="mb-10 flex flex-wrap items-center justify-between gap-4">
-
-          {/* Left side — day picker with navigation arrows */}
-          <DayCarousel />
-
-          {/* Right side — period filter chips (reusing DayCard!) */}
-          <div className="flex flex-wrap gap-3">
-            {PERIOD_FILTERS.map((filter) => (
-              <DayCard
-                key={filter.id}
-                day={filter.day}
-                isActive={activePeriod === filter.id}
-                onSelect={() => setActivePeriod(filter.id)}
-              />
-            ))}
+        <div data-aos="fade-up" data-aos-delay="100" className="mb-10">
+          <div
+            role="tablist"
+            aria-label="فترات البرامج"
+            className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-white/10 p-1.5 ring-1 ring-white/15 backdrop-blur-md"
+          >
+            {QUARTERS.map(({ id, label }) => {
+              const isActive = id === activeQuarter;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  id={`quarter-tab-${id}`}
+                  aria-selected={isActive}
+                  aria-controls="quarter-panel"
+                  onClick={() => setActiveQuarter(id)}
+                  className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-bold whitespace-nowrap transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:px-7 sm:text-base ${
+                    isActive
+                      ? "bg-primary text-primary-content shadow-lg shadow-black/20"
+                      : "text-white hover:bg-white/10"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
-
         </div>
 
-        {/* ── Event cards slider ── */}
-        <HappenNowSlider />
-
+        <div data-aos="fade-up" data-aos-delay="150" id="quarter-panel" role="tabpanel" aria-labelledby={`quarter-tab-${activeQuarter}`}>
+          <HappenNowSlider key={activeQuarter} items={items} />
+        </div>
       </div>
     </section>
   );

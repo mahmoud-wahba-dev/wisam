@@ -7,11 +7,18 @@ import 'swiper/css/free-mode';
 import { FreeMode } from 'swiper/modules';
 import ProgramCard from '@/pages/home/components/ProgramCard';
 import SliderControls from '@/pages/home/components/SliderControls';
-import { programs } from '@/data/programs';
 
-const HappenNowSlider = () => {
+const HappenNowSlider = ({ items }) => {
   const swiperRef = useRef(null);
   const [progress, setProgress] = useState(0);
+
+  if (items.length === 0) {
+    return (
+      <p className="py-16 text-center text-lg text-white/80">
+        لا توجد برامج في هذه الفترة حالياً.
+      </p>
+    );
+  }
 
   return (
     <div>
@@ -35,12 +42,11 @@ const HappenNowSlider = () => {
       >
         {/* !h-auto + flex makes every slide stretch to the tallest card, so
             cards with fewer meta rows still line up at the bottom. */}
-        {programs.map((program, index) => (
+        {items.map((program, index) => (
           <SwiperSlide key={program.id} className="!h-auto flex">
             <div
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-              className="flex w-full"
+              className="flex w-full animate-[package-fade-up_450ms_ease-out_both] motion-reduce:animate-none"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <ProgramCard {...program} />
             </div>

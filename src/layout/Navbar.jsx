@@ -99,11 +99,11 @@ const Navbar = () => {
             ))}
           </div>
         </ul>
-
+{/* 
         <Link to="/join" className="btn btn-primary gap-2" onClick={() => setOpenMenu(null)}>
           <HeartHandshake className="size-5" aria-hidden="true" />
           انضم إلينا
-        </Link>
+        </Link> */}
       </div>
 
       {/* Backdrop — fades in/out instead of snapping. */}

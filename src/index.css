@@ -194,6 +194,41 @@
   }
 }
 
+/* Animated beam: a short dash travels along a pathLength=1 SVG path, then rests. */
+@keyframes beam-travel {
+  0% {
+    stroke-dashoffset: 0.18;
+  }
+  80%,
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* Infinite moving cards: the track holds two copies, so -50% (minus half the 1rem gap) loops seamlessly. */
+@keyframes infinite-scroll {
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+.infinite-scroll {
+  animation: infinite-scroll var(--scroll-duration, 40s) linear infinite
+    var(--scroll-direction, normal);
+}
+
+.infinite-scroll.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinite-scroll {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 @keyframes package-content-out {
   from {
     opacity: 1;

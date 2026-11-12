@@ -1,5 +1,6 @@
 import { Calendar, Heart, MapPin, Users } from "lucide-react";
 import { Link } from "react-router";
+import { CardBody, CardContainer, CardItem } from "@/componets/ui/3d-card";
 
 const Tag = ({ children, tone = "warm" }) => (
   <span
@@ -39,23 +40,26 @@ const ProgramCard = ({
   const detailPath = `/programs/${id}`;
 
   return (
-    <article className="flex w-full max-w-sm flex-col overflow-hidden rounded-3xl bg-white text-secondary shadow-lg shadow-black/10">
-      <Link
-        to={detailPath}
-        tabIndex={-1}
-        aria-hidden="true"
-        className="relative aspect-4/3 w-full shrink-0 overflow-hidden"
-      >
-        <img
-          src={image}
-          alt=""
-          loading="lazy"
-          className="size-full object-cover transition-transform duration-500 hover:scale-105"
-        />
-      </Link>
+    <CardContainer containerClassName="max-w-sm" className="h-full">
+    <CardBody as="article" className="flex w-full flex-col rounded-3xl bg-white text-secondary shadow-lg shadow-black/10">
+      <CardItem translateZ={30} className="w-full shrink-0">
+        <Link
+          to={detailPath}
+          tabIndex={-1}
+          aria-hidden="true"
+          className="relative block aspect-4/3 w-full overflow-hidden rounded-t-3xl"
+        >
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            className="size-full object-cover transition-transform duration-500 hover:scale-105"
+          />
+        </Link>
+      </CardItem>
 
       {/* Card body: content at the top, link + CTA pinned to the bottom */}
-      <div className="flex flex-1 flex-col p-5">
+      <CardItem translateZ={20} className="flex flex-1 flex-col p-5">
         {tags.length > 0 && (
           <div className="mb-3 flex flex-wrap justify-between gap-2">
             <div className="gap-2 space-x-2">
@@ -106,8 +110,9 @@ const ProgramCard = ({
             {cta}
           </Link>
         </div>
-      </div>
-    </article>
+      </CardItem>
+    </CardBody>
+    </CardContainer>
   );
 };
 
