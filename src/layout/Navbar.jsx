@@ -129,15 +129,21 @@ const Navbar = () => {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [mobileOpen]);
 
+  // `revealed` = the bar has dropped back in while the page is scrolled (the
+  // "show on scroll up" state). This is the state to target if its background
+  // should ever differ from the normal scrolled bar.
+  const revealed = scrolled && navVisible;
+
   return (
     <>
     <div
       className={`navbar h-20 py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b
-        transition-[transform,background-color,border-color,box-shadow] duration-300
-        ${scrolled
+        transition-[translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+        ${scrolled && !revealed
           ? "bg-[var(--color-navbar)]/90 border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
-          : "border-transparent bg-transparent"}
+          : "border-transparent bg-transparent shadow-none backdrop-blur-none"}
         ${navVisible ? "translate-y-0" : "-translate-y-full"}`}
+      data-nav-state={revealed ? "revealed" : scrolled ? "scrolled" : "top"}
       style={{ gap: "1.75rem" }}
     >
       {/* Logo — rendered white so it reads on the dark navbar */}

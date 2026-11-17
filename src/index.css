@@ -38,10 +38,10 @@
   --color-primary: #e1892f;
   --color-primary-content: #063441;
 
-  /* Navigation bar — flat colour used once the page is scrolled */
+  /* Navigation bar — flat colour used while the page is scrolled */
   --color-navbar: #1d1c2e;
 
-  /* Reference-style grade laid over the hero (and the navbar sits on it):
+  /* Reference-style grade laid over the hero:
      solid at the top and bottom, translucent through the middle. */
   --overlay-hero: linear-gradient(
     180deg,
@@ -186,8 +186,7 @@
   }
 
   /* Navbar becomes a solid glass bar once the page scrolls.
-     At the very top it stays transparent so the hero grade reads through. */
-}
+     At the very top it stays transparent so the hero grade reads through. */}
 
 /* ==========================================================================
    Swiper — brand theming
