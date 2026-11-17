@@ -17,9 +17,9 @@ const navlinks = navSections.map((s) => s.label);
 // read cleanly on the dark bar; `انضم لفريقنا` falls back to the users icon.
 const navIcons = {
   "عن وسام": navAbout,
-  "الحوكمة": navBook,
-  "برامجنا": navEservices,
-  "التقارير": navFaqs,
+  الحوكمة: navBook,
+  برامجنا: navEservices,
+  التقارير: navFaqs,
   "تواصل معنا": navContacts,
   "المركز الإعلامي": navExternal,
 };
@@ -36,24 +36,24 @@ const navMenus = Object.fromEntries(
         to: `${basePath}/${p.slug}/${c.slug}`,
       })),
     })),
-  ])
+  ]),
 );
 
 // Height of the fixed navbar — keep in sync with the h-20 bar below
 const NAV_H = "5rem";
 
 const Navbar = () => {
-  const [openMenu, setOpenMenu]     = useState(null);
+  const [openMenu, setOpenMenu] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
-  const [activeSub, setActiveSub]   = useState(null);
-  const [menuKey, setMenuKey]       = useState(0);
+  const [activeSub, setActiveSub] = useState(null);
+  const [menuKey, setMenuKey] = useState(0);
   const [navVisible, setNavVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled]     = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const prevScrollY      = useRef(0);
-  const closeTimer       = useRef(null);
-  const mobileNavRef     = useRef(null);
+  const prevScrollY = useRef(0);
+  const closeTimer = useRef(null);
+  const mobileNavRef = useRef(null);
   const mobileDropdownRef = useRef(null);
 
   const isOpen = openMenu !== null;
@@ -110,7 +110,9 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!openMenu) return;
-    const onKey = (e) => { if (e.key === "Escape") closeMenu(); };
+    const onKey = (e) => {
+      if (e.key === "Escape") closeMenu();
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [openMenu]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -136,105 +138,116 @@ const Navbar = () => {
 
   return (
     <>
-    <div
-      className={`navbar h-20 py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b
+      <div
+        className={`navbar h-20 py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b
         transition-[translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
-        ${scrolled && !revealed
-          ? "bg-[var(--color-navbar)]/90 border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
-          : "border-transparent bg-transparent shadow-none backdrop-blur-none"}
+        ${
+          scrolled && !revealed
+            ? "bg-[var(--color-navbar)]/90 border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
+            : "border-transparent bg-transparent shadow-none backdrop-blur-none"
+        }
         ${navVisible ? "translate-y-0" : "-translate-y-full"}`}
-      data-nav-state={revealed ? "revealed" : scrolled ? "scrolled" : "top"}
-      style={{ gap: "1.75rem" }}
-    >
-      {/* Logo — rendered white so it reads on the dark navbar */}
-      <div className="relative z-50 flex-shrink-0">
-        <Link to="/" className="flex items-center p-1" onClick={closeMenu}>
-          <img
-            src={logo}
-            alt="وسام"
-            className="h-14 w-auto sm:h-16 object-contain brightness-0 invert"
-          />
-        </Link>
-      </div>
-
-      <div className="hidden lg:block lg:w-1/3" aria-hidden="true" />
-
-      <div className="relative z-50 flex flex-1 flex-nowrap items-center justify-end gap-3">
-
-        {/* ── Desktop: hover nav buttons (icon above label, compact) ──────── */}
-        <ul className="max-lg:hidden flex items-center gap-0.5 list-none">
-          {navlinks.map((item) => {
-            const icon = navIcons[item];
-            return (
-              <li key={item}>
-                <button
-                  type="button"
-                  onMouseEnter={() => openPanel(item)}
-                  onMouseLeave={scheduleClose}
-                  className={`group relative flex flex-col items-center gap-2 whitespace-nowrap
-                    px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200
-                    ${openMenu === item ? "text-primary" : "text-white hover:text-primary"}`}
-                >
-                  {icon ? (
-                    <img
-                      src={icon}
-                      alt=""
-                      aria-hidden="true"
-                      className={`h-6 w-auto transition-opacity duration-200
-                        ${openMenu === item ? "opacity-70" : "opacity-100"}`}
-                    />
-                  ) : (
-                    // Same 24px box as the SVG marks so this label keeps the
-                    // same baseline as the rest of the row.
-                    <span className="flex h-6 w-6 items-center justify-center">
-                      <Users className="size-5" aria-hidden="true" />
-                    </span>
-                  )}
-                  {item}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-2 -bottom-1 h-0.5 origin-center rounded-full bg-primary
-                      transition-transform duration-300 ease-out
-                      ${openMenu === item ? "scale-x-100" : "scale-x-0"}`}
-                  />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* ── Mobile / tablet: animated hamburger + dropdown ──────────────── */}
-        <div ref={mobileNavRef} className="relative lg:hidden">
-          <button
-            type="button"
-            aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((o) => !o)}
-            className="relative flex size-10 flex-col items-center justify-center gap-1.5"
-          >
-            <span
-              className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
-                ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
+        data-nav-state={revealed ? "revealed" : scrolled ? "scrolled" : "top"}
+        style={{ gap: "1.75rem" }}
+      >
+        {/* Logo — rendered white so it reads on the dark navbar */}
+        <div className="relative z-50 flex-shrink-0">
+          <Link to="/" className="flex items-center p-1" onClick={closeMenu}>
+            <img
+              src={logo}
+              alt="وسام"
+              className="h-14 w-auto sm:h-16 object-contain brightness-0 invert"
             />
-            <span
-              className={`h-0.5 w-6 rounded-full bg-white transition-opacity duration-200 ease-out
-                ${mobileOpen ? "opacity-0" : "opacity-100"}`}
-            />
-            <span
-              className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
-                ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
-            />
-          </button>
+          </Link>
         </div>
 
-        {/* ── Cart (decorative — no link, just simulates an e-commerce icon) ── */}
-        <button
-          type="button"
-          aria-label="السلة"
-          className="relative inline-flex items-center justify-center rounded-full p-2
+        <div className="hidden lg:block lg:w-1/3" aria-hidden="true" />
+
+        <div className="relative z-50 flex flex-1 flex-nowrap items-center justify-end gap-3">
+          {/* ── Desktop: hover nav buttons (icon above label, compact) ──────── */}
+          <ul className="max-lg:hidden flex items-center gap-0.5 list-none">
+            {navlinks.map((item) => {
+              const icon = navIcons[item];
+              return (
+                <li key={item}>
+                  <button
+                    type="button"
+                    onMouseEnter={() => openPanel(item)}
+                    onMouseLeave={scheduleClose}
+                    className={`group relative flex flex-col items-center gap-2 whitespace-nowrap
+                    px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200
+                    ${openMenu === item ? "text-primary" : "text-white hover:text-primary"}`}
+                  >
+                    {icon ? (
+                      <img
+                        src={icon}
+                        alt=""
+                        aria-hidden="true"
+                        className={`h-6 w-auto transition-opacity duration-200
+                        ${openMenu === item ? "opacity-70" : "opacity-100"}`}
+                      />
+                    ) : (
+                      // Same 24px box as the SVG marks so this label keeps the
+                      // same baseline as the rest of the row.
+                      <span className="flex h-6 w-6 items-center justify-center">
+                        <Users className="size-5" aria-hidden="true" />
+                      </span>
+                    )}
+                    {item}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-x-2 -bottom-1 h-0.5 origin-center rounded-full bg-primary
+                      transition-transform duration-300 ease-out
+                      ${openMenu === item ? "scale-x-100" : "scale-x-0"}`}
+                    />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* ── Mobile / tablet: animated hamburger + dropdown ──────────────── */}
+          <div ref={mobileNavRef} className="relative lg:hidden">
+            <button
+              type="button"
+              aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((o) => !o)}
+              className="relative flex size-10 flex-col items-center justify-center gap-1.5"
+            >
+              <span
+                className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
+                ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
+              />
+              <span
+                className={`h-0.5 w-6 rounded-full bg-white transition-opacity duration-200 ease-out
+                ${mobileOpen ? "opacity-0" : "opacity-100"}`}
+              />
+              <span
+                className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
+                ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
+              />
+            </button>
+          </div>
+
+          {/* ── Cart (decorative — no link, just simulates an e-commerce icon) ── */}
+          <Link
+            to={"https://salla.com/"}
+            target="_blank"
+            type="button"
+            aria-label="السلة"
+            className="relative inline-flex items-center justify-center rounded-full p-2
             text-white transition-colors hover:text-primary"
-        >
-          <ShoppingCart className="size-5" aria-hidden="true" />
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+              class="size-6 sm:size-7"
+            >
+              <path d="M18.862 13.439a1.27 1.27 0 0 0-.81-.555 1.27 1.27 0 0 0-.964.18c-3.422 2.231-6.75 2.231-10.178 0a1.27 1.27 0 0 0-.964-.18 1.283 1.283 0 0 0-.434 2.327c2.142 1.394 4.326 2.1 6.49 2.1 2.166 0 4.348-.706 6.488-2.102a1.27 1.27 0 0 0 .555-.81 1.27 1.27 0 0 0-.18-.964zm5.103 2.82-1.171-9.764a5.24 5.24 0 0 0-5.2-4.614H6.406a5.236 5.236 0 0 0-5.198 4.612l-1.17 9.766a5.235 5.235 0 0 0 5.198 5.86h13.529a5.238 5.238 0 0 0 5.198-5.86zm-3.21 2.4c-.532.6-1.265.929-2.066.929H5.311c-.801 0-1.536-.33-2.066-.929a2.73 2.73 0 0 1-.676-2.16l1.157-9.657A2.764 2.764 0 0 1 6.468 4.41h11.064a2.765 2.765 0 0 1 2.742 2.432l1.157 9.656a2.72 2.72 0 0 1-.676 2.161"></path>
+            </svg>
+            {/* <ShoppingCart className="size-5" aria-hidden="true" />
           <span
             dir="ltr"
             style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
@@ -242,10 +255,10 @@ const Navbar = () => {
               bg-primary text-[10px] leading-none text-primary-content"
           >
             0
-          </span>
-        </button>
+          </span> */}
+          </Link>
+        </div>
       </div>
-    </div>
 
       {/* ── Mobile / tablet hamburger dropdown (full width) ─────────────── */}
       <ul
@@ -279,7 +292,10 @@ const Navbar = () => {
                   <Users className="size-5 opacity-70" aria-hidden="true" />
                 )}
                 {item}
-                <ChevronLeft className="ms-auto size-4 opacity-40" aria-hidden="true" />
+                <ChevronLeft
+                  className="ms-auto size-4 opacity-40"
+                  aria-hidden="true"
+                />
               </button>
             </li>
           );
@@ -293,7 +309,11 @@ const Navbar = () => {
         aria-hidden="true"
         onMouseEnter={cancelClose}
         className="fixed left-0 w-full z-40"
-        style={{ top: NAV_H, height: "0.5rem", pointerEvents: isOpen ? "auto" : "none" }}
+        style={{
+          top: NAV_H,
+          height: "0.5rem",
+          pointerEvents: isOpen ? "auto" : "none",
+        }}
       />
 
       {/* ── Backdrop ────────────────────────────────────────────────────── */}
@@ -319,7 +339,10 @@ const Navbar = () => {
           ${isOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-4 opacity-0"}`}
         style={{ top: NAV_H }}
       >
-        <div key={`${activeMenu}-${menuKey}`} className="container min-h-full py-10 lg:py-20">
+        <div
+          key={`${activeMenu}-${menuKey}`}
+          className="container min-h-full py-10 lg:py-20"
+        >
           {activeMenu && (
             <div className="grid min-h-full grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-0">
               {/* Section title */}
@@ -348,7 +371,10 @@ const Navbar = () => {
                       >
                         {item.label}
                         {item.children?.length > 0 && (
-                          <ChevronLeft className="size-4 shrink-0 opacity-60" aria-hidden="true" />
+                          <ChevronLeft
+                            className="size-4 shrink-0 opacity-60"
+                            aria-hidden="true"
+                          />
                         )}
                       </Link>
                     </li>
@@ -379,7 +405,10 @@ const Navbar = () => {
                 )}
               </div>
 
-              <div className="hidden lg:col-span-1 lg:block" aria-hidden="true" />
+              <div
+                className="hidden lg:col-span-1 lg:block"
+                aria-hidden="true"
+              />
             </div>
           )}
         </div>
