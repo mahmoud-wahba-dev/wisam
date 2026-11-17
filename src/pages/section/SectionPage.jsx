@@ -35,8 +35,10 @@ const EmptyState = ({ title }) => (
  * Shared page shell for every sub-page: brand backdrop, breadcrumb, title and
  * an optional intro. Pages pass their own content as children.
  */
-const SectionPage = ({ section, title, intro, children }) => {
-  const crumbs = section === title ? [section] : [section, title];
+const SectionPage = ({ section, parent, title, intro, children }) => {
+  const crumbs = [section, parent, title].filter(
+    (crumb, index, all) => crumb && all.indexOf(crumb) === index
+  );
 
   return (
     <section className="brand-gradient min-h-[70vh] pt-36 pb-20 text-white sm:pt-44">

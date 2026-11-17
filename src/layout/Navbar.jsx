@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ShoppingCart } from "lucide-react";
 import { navSections } from "@/data/siteNav";
 
 const navlinks = navSections.map((s) => s.label);
@@ -94,7 +94,7 @@ const Navbar = () => {
   return (
     <>
     <div
-      className={`navbar py-0 fixed top-0 left-0 z-50 w-full border-b border-black/5
+      className={`navbar py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b border-black/5
         transition-transform duration-300
         ${navVisible ? "translate-y-0" : "-translate-y-full"}`}
       style={{
@@ -174,6 +174,20 @@ const Navbar = () => {
             ))}
           </div>
         </ul>
+
+        {/* ── Cart (decorative — no link, just simulates an e-commerce icon) ── */}
+        <button
+          type="button"
+          aria-label="السلة"
+          className="relative inline-flex items-center justify-center rounded-full p-2
+            text-secondary transition-colors hover:text-primary"
+        >
+          <ShoppingCart className="size-5" aria-hidden="true" />
+          <span className="absolute -top-1 -end-1 grid size-4 place-items-center rounded-full
+            bg-primary text-[10px] leading-none font-bold text-primary-content">
+            0
+          </span>
+        </button>
       </div>
     </div>
 

@@ -4,6 +4,18 @@
   themes: false;
 }
 
+/* Every link, button and dropdown/menu item shows a pointer cursor, matching
+   the navbar links — regardless of the element the component renders as. */
+@layer base {
+  a,
+  button:not(:disabled),
+  [role="button"],
+  .menu li > *:not(.menu-title, details > summary),
+  .dropdown-content a {
+    cursor: pointer;
+  }
+}
+
 /* ==========================================================================
    Brand palette
    Orange #E1892F · Navy #063441 · Teal #357382

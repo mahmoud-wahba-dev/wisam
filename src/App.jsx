@@ -18,16 +18,18 @@ const specialPages = {
   news: NewsPage,
 };
 
-// One index redirect + one page per megamenu entry.
+// One index redirect + one page per megamenu entry, plus one more per nested
+// (hover sub-column) entry, so every link in the navbar — top-level or
+// nested — always resolves to a real, recognizable page.
 const navRoutes = navSections.flatMap(({ label: section, basePath, pages }) => [
   {
     path: basePath,
     element: <Navigate to={`${basePath}/${pages[0].slug}`} replace />,
   },
-  ...pages.map(({ label, slug, page }) => {
+  ...pages.flatMap(({ label, slug, page, children }) => {
     const Special = page ? specialPages[page] : null;
 
-    return {
+    const route = {
       path: `${basePath}/${slug}`,
       element: Special ? (
         <Special />
@@ -35,6 +37,13 @@ const navRoutes = navSections.flatMap(({ label: section, basePath, pages }) => [
         <SectionPage section={section} title={label} />
       ),
     };
+
+    const childRoutes = (children ?? []).map((child) => ({
+      path: `${basePath}/${slug}/${child.slug}`,
+      element: <SectionPage section={section} parent={label} title={child.label} />,
+    }));
+
+    return [route, ...childRoutes];
   }),
 ]);
 
