@@ -71,10 +71,10 @@ export const navSections = [
     label: "تواصل معنا",
     basePath: "/contact",
     pages: [
-      { label: "زرنا ", slug: "visit" },
-      { label: "شاركنا رأيك", slug: "feedback" },
-      { label: "اتصل بنا", slug: "contact-us" },
-      { label: "قيم تجربتك معنا", slug: "rate-experience" },
+      { label: "زرنا ", slug: "visit", page: "visit" },
+      { label: "شاركنا رأيك", slug: "feedback", page: "feedback" },
+      { label: "اتصل بنا", slug: "contact-us", page: "contact-us" },
+      { label: "قيم تجربتك معنا", slug: "rate-experience", page: "rate-experience" },
     ],
   },
   {

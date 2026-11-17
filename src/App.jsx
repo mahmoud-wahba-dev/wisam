@@ -10,12 +10,20 @@ import Memberships from "@/pages/memberships/Memberships";
 import Join from "@/pages/join/Join";
 import NewsPage from "@/pages/media/NewsPage";
 import NewsDetail from "@/pages/media/NewsDetail";
+import VisitUs from "@/pages/contact/VisitUs";
+import ShareFeedback from "@/pages/contact/ShareFeedback";
+import ContactUs from "@/pages/contact/ContactUs";
+import RateExperience from "@/pages/contact/RateExperience";
 import NotFound from "@/pages/not-found/NotFound";
 import { navSections } from "@/data/siteNav";
 
 // Megamenu entries that have a richer page than the shared placeholder.
 const specialPages = {
   news: NewsPage,
+  visit: VisitUs,
+  feedback: ShareFeedback,
+  "contact-us": ContactUs,
+  "rate-experience": RateExperience,
 };
 
 // One index redirect + one page per megamenu entry, plus one more per nested
