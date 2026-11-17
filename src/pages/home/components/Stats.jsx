@@ -32,7 +32,7 @@ const Stats = () => {
           {stats.map(({ key, value, label, icon: Icon }, index) => (
             <li
               key={key}
-              className={`relative ${index === stats.length - 1 ? "col-span-2 md:col-span-1" : ""}`}
+              className={`relative [container-type:inline-size] ${index === stats.length - 1 ? "col-span-2 md:col-span-1" : ""}`}
             >
               {/* Beam target sits outside the AOS wrapper so its position is never transformed. */}
               <span
@@ -47,12 +47,13 @@ const Stats = () => {
                     <CardItem translateZ={40}>
                       <Icon className="size-9 text-white" strokeWidth={1.5} aria-hidden="true" />
                     </CardItem>
+                    {/* Font size follows the card width (cqw) so "+5,000" always fits on one line. */}
                     <CardItem
                       translateZ={60}
                       dir="ltr"
-                      className="mt-4 text-4xl font-extrabold text-primary lg:text-5xl"
+                      className="mt-4 whitespace-nowrap text-[min(3rem,17cqw)] font-extrabold leading-tight text-primary"
                     >
-                      <span className="align-top text-2xl lg:text-3xl">+</span>
+                      <span className="align-top text-[0.6em]">+</span>
                       <NumberTicker value={value} delay={index * 0.1} />
                     </CardItem>
                     <CardItem translateZ={30} className="mt-3 text-lg text-white/90 lg:text-xl">

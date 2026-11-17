@@ -29,9 +29,20 @@ export const NumberTicker = ({ value, delay = 0, className, ...props }) => {
     [springValue]
   );
 
+  // The invisible copy of the final value reserves the full width/height up front, so counting
+  // up never changes the layout (no wrapping, no shifting of surrounding content).
   return (
-    <span ref={ref} dir="ltr" className={cn("inline-block tabular-nums", className)} {...props}>
-      0
+    <span
+      dir="ltr"
+      className={cn("inline-grid whitespace-nowrap tabular-nums", className)}
+      {...props}
+    >
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+        {format(value)}
+      </span>
+      <span ref={ref} className="col-start-1 row-start-1">
+        0
+      </span>
     </span>
   );
 };
