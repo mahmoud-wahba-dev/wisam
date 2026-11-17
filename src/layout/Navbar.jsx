@@ -1,10 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
-import { ChevronLeft, ShoppingCart } from "lucide-react";
+import {
+  ChevronLeft,
+  ShoppingCart,
+  Info,
+  ShieldCheck,
+  LayoutGrid,
+  FileText,
+  Phone,
+  Newspaper,
+  Users,
+} from "lucide-react";
 import { navSections } from "@/data/siteNav";
 
 const navlinks = navSections.map((s) => s.label);
+
+// One compact icon per top-level section, shown above its label on desktop —
+// keeps every item narrow enough that all 7 fit without overflowing.
+const navIcons = {
+  "عن وسام": Info,
+  "الحوكمة": ShieldCheck,
+  "برامجنا": LayoutGrid,
+  "التقارير": FileText,
+  "تواصل معنا": Phone,
+  "المركز الإعلامي": Newspaper,
+  "انضم لفريقنا": Users,
+};
 // Each page can optionally carry `children` — sub-links shown in a second
 // hover column next to it inside the same mega panel.
 const navMenus = Object.fromEntries(
@@ -135,33 +157,36 @@ const Navbar = () => {
 
       <div className="relative z-50 flex flex-1 flex-nowrap items-center justify-end gap-3">
 
-        {/* ── Desktop: hover nav buttons ────────────────────────────────── */}
-        <ul className="max-xl:hidden flex items-center gap-1 list-none">
-          {navlinks.map((item) => (
-            <li key={item}>
-              <button
-                type="button"
-                onMouseEnter={() => openPanel(item)}
-                onMouseLeave={scheduleClose}
-                className={`group relative bg-transparent px-4  font-bold whitespace-nowrap
-                  text-base text-secondary transition-colors duration-200 hover:bg-transparent
-                  focus:bg-transparent focus-visible:outline-none hover:text-primary
-                  ${openMenu === item ? "text-primary" : ""}`}
-              >
-                {item}
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-x-3 -bottom-1.5 h-0.5 origin-center rounded-full bg-primary
-                    transition-transform duration-300 ease-out
-                    ${openMenu === item ? "scale-x-100" : "scale-x-0"}`}
-                />
-              </button>
-            </li>
-          ))}
+        {/* ── Desktop: hover nav buttons (icon above label, compact) ──────── */}
+        <ul className="max-lg:hidden flex items-center gap-0.5 list-none">
+          {navlinks.map((item) => {
+            const Icon = navIcons[item];
+            return (
+              <li key={item}>
+                <button
+                  type="button"
+                  onMouseEnter={() => openPanel(item)}
+                  onMouseLeave={scheduleClose}
+                  className={`group relative flex flex-col items-center gap-1 whitespace-nowrap
+                    px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200
+                    ${openMenu === item ? "text-primary" : "text-secondary hover:text-primary"}`}
+                >
+                  {Icon && <Icon className="size-5" aria-hidden="true" />}
+                  {item}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-2 -bottom-1 h-0.5 origin-center rounded-full bg-primary
+                      transition-transform duration-300 ease-out
+                      ${openMenu === item ? "scale-x-100" : "scale-x-0"}`}
+                  />
+                </button>
+              </li>
+            );
+          })}
         </ul>
 
         {/* ── Mobile / tablet: animated hamburger + dropdown ──────────────── */}
-        <div ref={mobileNavRef} className="relative xl:hidden">
+        <div ref={mobileNavRef} className="relative lg:hidden">
           <button
             type="button"
             aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
@@ -208,7 +233,7 @@ const Navbar = () => {
       <ul
         ref={mobileDropdownRef}
         className={`fixed inset-x-0 z-40 space-y-1 rounded-b-3xl bg-white p-4 shadow-2xl shadow-black/20
-          transition-[opacity,transform,visibility] duration-200 ease-out xl:hidden
+          transition-[opacity,transform,visibility] duration-200 ease-out lg:hidden
           ${mobileOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
         style={{ top: NAV_H }}
       >
