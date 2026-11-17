@@ -1,13 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
+import { ChevronLeft } from "lucide-react";
 import { navSections } from "@/data/siteNav";
 
 const navlinks = navSections.map((s) => s.label);
+// Each page can optionally carry `children` — sub-links shown in a second
+// hover column next to it inside the same mega panel.
 const navMenus = Object.fromEntries(
   navSections.map(({ label, basePath, pages }) => [
     label,
-    pages.map((p) => ({ label: p.label, to: `${basePath}/${p.slug}` })),
+    pages.map((p) => ({
+      label: p.label,
+      to: `${basePath}/${p.slug}`,
+      children: p.children?.map((c) => ({
+        label: c.label,
+        to: `${basePath}/${p.slug}/${c.slug}`,
+      })),
+    })),
   ])
 );
 
@@ -17,6 +27,7 @@ const NAV_H = "4rem";
 const Navbar = () => {
   const [openMenu, setOpenMenu]     = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [activeSub, setActiveSub]   = useState(null);
   const [menuKey, setMenuKey]       = useState(0);
   const [navVisible, setNavVisible] = useState(true);
 
@@ -32,6 +43,7 @@ const Navbar = () => {
     if (openMenu !== item) {
       setActiveMenu(item);
       setMenuKey((k) => k + 1);
+      setActiveSub(null);
     }
     setOpenMenu(item);
   };
@@ -45,13 +57,17 @@ const Navbar = () => {
   const closeMenu = () => {
     clearTimeout(closeTimer.current);
     setOpenMenu(null);
+    setActiveSub(null);
   };
 
   // Mobile click toggle
   const toggleMenu = (item) => {
     const closing = openMenu === item;
     setActiveMenu(item);
-    if (!closing) setMenuKey((k) => k + 1);
+    if (!closing) {
+      setMenuKey((k) => k + 1);
+      setActiveSub(null);
+    }
     setOpenMenu(closing ? null : item);
     mobileMenuRef.current?.hidePopover?.();
   };
@@ -204,28 +220,57 @@ const Navbar = () => {
                 </h2>
               </div>
 
-              {/* Links */}
+              {/* Top-level items — hovering one with children reveals the sub column */}
               <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
                 <ul className="space-y-4 sm:space-y-5">
-                  {navMenus[activeMenu].map(({ label, to }, index) => (
+                  {navMenus[activeMenu].map((item, index) => (
                     <li
-                      key={label}
+                      key={item.label}
                       style={{ animationDelay: `${index * 45}ms` }}
                       className="menu-item-in motion-reduce:animate-none"
+                      onMouseEnter={() => item.children && setActiveSub(item)}
                     >
                       <Link
-                        to={to}
+                        to={item.to}
                         onClick={closeMenu}
-                        className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
+                        className={`flex items-center justify-between gap-2 text-base transition-colors
+                          hover:text-primary sm:text-lg
+                          ${activeSub?.label === item.label ? "text-primary" : "text-white/80"}`}
                       >
-                        {label}
+                        {item.label}
+                        {item.children?.length > 0 && (
+                          <ChevronLeft className="size-4 shrink-0 opacity-60" aria-hidden="true" />
+                        )}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="hidden lg:col-span-2 lg:block" aria-hidden="true" />
+              {/* Sub-items for whichever top-level item is active */}
+              <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
+                {activeSub?.children?.length > 0 && (
+                  <ul key={activeSub.label} className="space-y-4 sm:space-y-5">
+                    {activeSub.children.map((child, index) => (
+                      <li
+                        key={child.label}
+                        style={{ animationDelay: `${index * 45}ms` }}
+                        className="menu-item-in motion-reduce:animate-none"
+                      >
+                        <Link
+                          to={child.to}
+                          onClick={closeMenu}
+                          className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="hidden lg:col-span-1 lg:block" aria-hidden="true" />
             </div>
           )}
         </div>
