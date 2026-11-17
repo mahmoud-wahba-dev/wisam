@@ -150,9 +150,13 @@ const Hero = () => {
           </video>
         )}
 
-        {/* Side scrim + bottom overlay keep the text legible over the footage */}
-        <div className="absolute inset-0 bg-gradient-to-l from-secondary/85 via-secondary/35 to-secondary/10" />
-        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-secondary via-secondary/60 to-transparent" />
+        {/* Reference grade: solid ink from the very top (so the transparent
+            navbar sits on it) fading down through the hero, translucent in
+            the middle so the footage reads. */}
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: "var(--overlay-hero)" }}
+        />
       </div>
 
       <div className="container relative z-10 flex min-h-screen flex-col justify-end pb-10 pt-36 sm:pt-44 lg:pb-16">

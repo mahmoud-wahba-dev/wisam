@@ -1,31 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "@/assets/imgs/logo-nav-removebg.webp";
 import { Link } from "react-router";
-import {
-  ChevronLeft,
-  ShoppingCart,
-  Info,
-  ShieldCheck,
-  LayoutGrid,
-  FileText,
-  Phone,
-  Newspaper,
-  Users,
-} from "lucide-react";
+import { ChevronLeft, ShoppingCart, Users } from "lucide-react";
 import { navSections } from "@/data/siteNav";
+import navAbout from "@/assets/imgs/nav/about.svg";
+import navBook from "@/assets/imgs/nav/book.svg";
+import navContacts from "@/assets/imgs/nav/contacts.svg";
+import navEservices from "@/assets/imgs/nav/eservices.svg";
+import navExternal from "@/assets/imgs/nav/external.svg";
+import navFaqs from "@/assets/imgs/nav/faqs.svg";
 
 const navlinks = navSections.map((s) => s.label);
 
-// One compact icon per top-level section, shown above its label on desktop —
-// keeps every item narrow enough that all 7 fit without overflowing.
+// One glyph per top-level section, shown above its label on desktop. The marks
+// are the white outline icons used by the reference government navbar, so they
+// read cleanly on the dark bar; `انضم لفريقنا` falls back to the users icon.
 const navIcons = {
-  "عن وسام": Info,
-  "الحوكمة": ShieldCheck,
-  "برامجنا": LayoutGrid,
-  "التقارير": FileText,
-  "تواصل معنا": Phone,
-  "المركز الإعلامي": Newspaper,
-  "انضم لفريقنا": Users,
+  "عن وسام": navAbout,
+  "الحوكمة": navBook,
+  "برامجنا": navEservices,
+  "التقارير": navFaqs,
+  "تواصل معنا": navContacts,
+  "المركز الإعلامي": navExternal,
 };
 // Each page can optionally carry `children` — sub-links shown in a second
 // hover column next to it inside the same mega panel.
@@ -43,8 +39,8 @@ const navMenus = Object.fromEntries(
   ])
 );
 
-// Height of the fixed navbar — keep in sync with the img h-12/sm:h-14 + daisyUI min-h-16
-const NAV_H = "4rem";
+// Height of the fixed navbar — keep in sync with the h-20 bar below
+const NAV_H = "5rem";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu]     = useState(null);
@@ -53,6 +49,7 @@ const Navbar = () => {
   const [menuKey, setMenuKey]       = useState(0);
   const [navVisible, setNavVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
 
   const prevScrollY      = useRef(0);
   const closeTimer       = useRef(null);
@@ -102,6 +99,7 @@ const Navbar = () => {
     const onScroll = () => {
       const y = window.scrollY;
       setNavVisible(y < 10 || y < prevScrollY.current);
+      setScrolled(y > 24);
       if (openMenu) closeMenu();
       if (mobileOpen) setMobileOpen(false);
       prevScrollY.current = y;
@@ -134,21 +132,21 @@ const Navbar = () => {
   return (
     <>
     <div
-      className={`navbar py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b border-black/5
-        transition-transform duration-300
+      className={`navbar h-20 py-0 px-4 sm:px-6 lg:px-10 xl:px-16 fixed top-0 left-0 z-50 w-full border-b
+        transition-[transform,background-color,border-color,box-shadow] duration-300
+        ${scrolled
+          ? "bg-[var(--color-navbar)]/90 border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
+          : "border-transparent bg-transparent"}
         ${navVisible ? "translate-y-0" : "-translate-y-full"}`}
-      style={{
-        gap: "1.75rem",
-        background: "linear-gradient(180deg, rgba(244,247,248,0.97) 0%, rgba(244,247,248,0.90) 100%)",
-      }}
+      style={{ gap: "1.75rem" }}
     >
-      {/* Logo — kept in its original brand colors in every state */}
+      {/* Logo — rendered white so it reads on the dark navbar */}
       <div className="relative z-50 flex-shrink-0">
         <Link to="/" className="flex items-center p-1" onClick={closeMenu}>
           <img
             src={logo}
             alt="وسام"
-            className="h-12 w-auto sm:h-14 object-contain"
+            className="h-14 w-auto sm:h-16 object-contain brightness-0 invert"
           />
         </Link>
       </div>
@@ -160,18 +158,32 @@ const Navbar = () => {
         {/* ── Desktop: hover nav buttons (icon above label, compact) ──────── */}
         <ul className="max-lg:hidden flex items-center gap-0.5 list-none">
           {navlinks.map((item) => {
-            const Icon = navIcons[item];
+            const icon = navIcons[item];
             return (
               <li key={item}>
                 <button
                   type="button"
                   onMouseEnter={() => openPanel(item)}
                   onMouseLeave={scheduleClose}
-                  className={`group relative flex flex-col items-center gap-1 whitespace-nowrap
+                  className={`group relative flex flex-col items-center gap-2 whitespace-nowrap
                     px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200
-                    ${openMenu === item ? "text-primary" : "text-secondary hover:text-primary"}`}
+                    ${openMenu === item ? "text-primary" : "text-white hover:text-primary"}`}
                 >
-                  {Icon && <Icon className="size-5" aria-hidden="true" />}
+                  {icon ? (
+                    <img
+                      src={icon}
+                      alt=""
+                      aria-hidden="true"
+                      className={`h-6 w-auto transition-opacity duration-200
+                        ${openMenu === item ? "opacity-70" : "opacity-100"}`}
+                    />
+                  ) : (
+                    // Same 24px box as the SVG marks so this label keeps the
+                    // same baseline as the rest of the row.
+                    <span className="flex h-6 w-6 items-center justify-center">
+                      <Users className="size-5" aria-hidden="true" />
+                    </span>
+                  )}
                   {item}
                   <span
                     aria-hidden="true"
@@ -195,15 +207,15 @@ const Navbar = () => {
             className="relative flex size-10 flex-col items-center justify-center gap-1.5"
           >
             <span
-              className={`h-0.5 w-6 rounded-full bg-secondary transition-transform duration-300 ease-out
+              className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
                 ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
             />
             <span
-              className={`h-0.5 w-6 rounded-full bg-secondary transition-opacity duration-200 ease-out
+              className={`h-0.5 w-6 rounded-full bg-white transition-opacity duration-200 ease-out
                 ${mobileOpen ? "opacity-0" : "opacity-100"}`}
             />
             <span
-              className={`h-0.5 w-6 rounded-full bg-secondary transition-transform duration-300 ease-out
+              className={`h-0.5 w-6 rounded-full bg-white transition-transform duration-300 ease-out
                 ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
             />
           </button>
@@ -214,7 +226,7 @@ const Navbar = () => {
           type="button"
           aria-label="السلة"
           className="relative inline-flex items-center justify-center rounded-full p-2
-            text-secondary transition-colors hover:text-primary"
+            text-white transition-colors hover:text-primary"
         >
           <ShoppingCart className="size-5" aria-hidden="true" />
           <span
@@ -237,21 +249,35 @@ const Navbar = () => {
           ${mobileOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
         style={{ top: NAV_H }}
       >
-        {navlinks.map((item) => (
-          <li key={item}>
-            <button
-              type="button"
-              className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-base
-                font-semibold text-secondary transition-colors hover:bg-primary/10 hover:text-primary
-                ${openMenu === item ? "bg-primary/10 text-primary" : ""}`}
-              onClick={() => toggleMenu(item)}
-              aria-expanded={openMenu === item}
-              aria-controls="mega-panel"
-            >
-              {item}
-            </button>
-          </li>
-        ))}
+        {navlinks.map((item) => {
+          const icon = navIcons[item];
+          return (
+            <li key={item}>
+              <button
+                type="button"
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-base
+                  font-semibold text-secondary transition-colors hover:bg-primary/10 hover:text-primary
+                  ${openMenu === item ? "bg-primary/10 text-primary" : ""}`}
+                onClick={() => toggleMenu(item)}
+                aria-expanded={openMenu === item}
+                aria-controls="mega-panel"
+              >
+                {icon ? (
+                  <img
+                    src={icon}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-5 w-auto brightness-0 opacity-70"
+                  />
+                ) : (
+                  <Users className="size-5 opacity-70" aria-hidden="true" />
+                )}
+                {item}
+                <ChevronLeft className="ms-auto size-4 opacity-40" aria-hidden="true" />
+              </button>
+            </li>
+          );
+        })}
       </ul>
 
       {/* Hover bridge: tiny invisible strip that covers the gap between the

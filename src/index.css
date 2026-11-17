@@ -38,6 +38,21 @@
   --color-primary: #e1892f;
   --color-primary-content: #063441;
 
+  /* Navigation bar — flat colour used once the page is scrolled */
+  --color-navbar: #1d1c2e;
+
+  /* Reference-style grade laid over the hero (and the navbar sits on it):
+     solid at the top and bottom, translucent through the middle. */
+  --overlay-hero: linear-gradient(
+    180deg,
+    #1d1c2e 0.03%,
+    rgba(29, 28, 46, 0.95) 11.34%,
+    rgba(29, 28, 46, 0.3) 31.75%,
+    rgba(29, 28, 46, 0.44) 77.32%,
+    rgba(29, 28, 46, 0.65) 86.6%,
+    #1d1c2e 100%
+  );
+
   /* Brand navy — dark surfaces, headers, hero shell */
   --color-secondary: #063441;
   --color-secondary-content: #ffffff;
@@ -169,6 +184,9 @@
         #0d4a5a 100%
       );
   }
+
+  /* Navbar becomes a solid glass bar once the page scrolls.
+     At the very top it stays transparent so the hero grade reads through. */
 }
 
 /* ==========================================================================

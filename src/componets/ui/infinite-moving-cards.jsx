@@ -2,6 +2,10 @@ import { cn } from "@/lib/utils";
 
 const DURATIONS = { fast: "20s", normal: "40s", slow: "80s" };
 
+// `speed` accepts a preset name or any CSS time (e.g. "30s") when a section
+// needs a specific pace between the presets.
+const resolveDuration = (speed) => DURATIONS[speed] ?? speed;
+
 // Port of Aceternity's InfiniteMovingCards: the list is rendered twice and the
 // track slides by half its width, so the loop is seamless.
 export const InfiniteMovingCards = ({
@@ -38,7 +42,7 @@ export const InfiniteMovingCards = ({
           pauseOnHover && "pause-on-hover"
         )}
         style={{
-          "--scroll-duration": DURATIONS[speed],
+          "--scroll-duration": resolveDuration(speed),
           "--scroll-direction": direction === "left" ? "normal" : "reverse",
         }}
       >

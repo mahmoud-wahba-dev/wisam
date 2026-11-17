@@ -1,23 +1,37 @@
-import { Building2 } from "lucide-react";
 import { InfiniteMovingCards } from "@/componets/ui/infinite-moving-cards";
 import { partners } from "@/data/partners";
 
-const PartnerCard = ({ name, logo }) => (
-  <div
-    dir="rtl"
-    className="grid h-24 w-48 place-items-center rounded-2xl bg-white px-6 shadow-lg shadow-black/15 sm:h-28 sm:w-56"
-  >
+// Cycling badge colors from the brand palette, so placeholder marks still
+// look varied and intentional before real logos are dropped in.
+const BADGE_COLORS = ["bg-secondary", "bg-primary", "bg-accent"];
+
+// A single representative Arabic letter for the placeholder mark — strips a
+// leading "ال" so e.g. "الراجحي" reads as "ر" rather than "ا".
+const getInitial = (name) => {
+  const firstWord = name.trim().split(" ")[0];
+  const stripped =
+    firstWord.startsWith("ال") && firstWord.length > 3 ? firstWord.slice(2) : firstWord;
+  return stripped.charAt(0);
+};
+
+const PartnerCard = ({ id, name, logo }) => (
+  <div className="flex h-24 w-40 items-center justify-center px-3 sm:h-28 sm:w-48">
     {logo ? (
       <img
         src={logo}
         alt={name}
         loading="lazy"
-        className="max-h-14 w-auto object-contain grayscale transition duration-300 hover:grayscale-0"
+        className="max-h-14 w-auto max-w-full object-contain brightness-0 invert opacity-75 transition duration-300 hover:opacity-100 sm:max-h-16"
       />
     ) : (
-      <span className="flex items-center gap-2 text-center font-bold text-secondary">
-        <Building2 className="size-6 shrink-0 text-primary" strokeWidth={1.6} aria-hidden="true" />
-        {name}
+      <span
+        title={name}
+        aria-label={name}
+        className={`grid size-16 place-items-center rounded-full text-2xl font-extrabold text-white
+          shadow-md shadow-black/10 transition-transform duration-300 hover:scale-105 sm:size-20 sm:text-3xl
+          ${BADGE_COLORS[(parseInt(id.match(/\d+$/)?.[0] ?? "0", 10)) % BADGE_COLORS.length]}`}
+      >
+        {getInitial(name)}
       </span>
     )}
   </div>
@@ -33,11 +47,13 @@ const Partners = () => {
       </div>
 
       <div data-aos="fade-up" data-aos-delay="100">
+        {/* ~30s per loop: between "normal" (40s) and "fast" (20s), so it feels
+            noticeably quicker while the logos stay legible. */}
         <InfiniteMovingCards
           items={partners}
           getKey={(partner) => partner.id}
           renderItem={(partner) => <PartnerCard {...partner} />}
-          speed="slow"
+          speed="30s"
         />
       </div>
     </section>
