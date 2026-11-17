@@ -30,10 +30,12 @@ const Navbar = () => {
   const [activeSub, setActiveSub]   = useState(null);
   const [menuKey, setMenuKey]       = useState(0);
   const [navVisible, setNavVisible] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const mobileMenuRef = useRef(null);
-  const prevScrollY   = useRef(0);
-  const closeTimer    = useRef(null);
+  const prevScrollY      = useRef(0);
+  const closeTimer       = useRef(null);
+  const mobileNavRef     = useRef(null);
+  const mobileDropdownRef = useRef(null);
 
   const isOpen = openMenu !== null;
 
@@ -58,9 +60,10 @@ const Navbar = () => {
     clearTimeout(closeTimer.current);
     setOpenMenu(null);
     setActiveSub(null);
+    setMobileOpen(false);
   };
 
-  // Mobile click toggle
+  // Mobile: tapping a section in the hamburger dropdown opens the shared mega panel
   const toggleMenu = (item) => {
     const closing = openMenu === item;
     setActiveMenu(item);
@@ -69,7 +72,7 @@ const Navbar = () => {
       setActiveSub(null);
     }
     setOpenMenu(closing ? null : item);
-    mobileMenuRef.current?.hidePopover?.();
+    setMobileOpen(false);
   };
 
   // ── Scroll ─────────────────────────────────────────────────────────────
@@ -78,11 +81,12 @@ const Navbar = () => {
       const y = window.scrollY;
       setNavVisible(y < 10 || y < prevScrollY.current);
       if (openMenu) closeMenu();
+      if (mobileOpen) setMobileOpen(false);
       prevScrollY.current = y;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [openMenu]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [openMenu, mobileOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!openMenu) return;
@@ -90,6 +94,20 @@ const Navbar = () => {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [openMenu]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onPointerDown = (e) => {
+      if (
+        !mobileNavRef.current?.contains(e.target) &&
+        !mobileDropdownRef.current?.contains(e.target)
+      ) {
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [mobileOpen]);
 
   return (
     <>
@@ -118,7 +136,7 @@ const Navbar = () => {
       <div className="relative z-50 flex flex-1 flex-nowrap items-center justify-end gap-3">
 
         {/* ── Desktop: hover nav buttons ────────────────────────────────── */}
-        <ul className="max-lg:hidden flex items-center gap-1 list-none">
+        <ul className="max-xl:hidden flex items-center gap-1 list-none">
           {navlinks.map((item) => (
             <li key={item}>
               <button
@@ -142,38 +160,29 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* ── Mobile: popover + click ───────────────────────────────────── */}
-        <ul className="menu menu-horizontal px-1 lg:hidden">
+        {/* ── Mobile / tablet: animated hamburger + dropdown ──────────────── */}
+        <div ref={mobileNavRef} className="relative xl:hidden">
           <button
             type="button"
-            className="btn sm:hidden"
-            popoverTarget="my-megamenu-3"
-            onClick={closeMenu}
+            aria-label={mobileOpen ? "إغلاق القائمة" : "فتح القائمة"}
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((o) => !o)}
+            className="relative flex size-10 flex-col items-center justify-center gap-1.5"
           >
-            Menu
+            <span
+              className={`h-0.5 w-6 rounded-full bg-secondary transition-transform duration-300 ease-out
+                ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
+            />
+            <span
+              className={`h-0.5 w-6 rounded-full bg-secondary transition-opacity duration-200 ease-out
+                ${mobileOpen ? "opacity-0" : "opacity-100"}`}
+            />
+            <span
+              className={`h-0.5 w-6 rounded-full bg-secondary transition-transform duration-300 ease-out
+                ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
+            />
           </button>
-          <div
-            ref={mobileMenuRef}
-            className="megamenu max-sm:megamenu-vertical p-2"
-            id="my-megamenu-3"
-            popover="auto"
-          >
-            {navlinks.map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={`flex items-center whitespace-nowrap px-4 py-2 text-base font-bold
-                  text-white underline-offset-8 transition-colors hover:text-primary max-sm:text-primary
-                  ${openMenu === item ? "underline decoration-primary decoration-2" : ""}`}
-                onClick={() => toggleMenu(item)}
-                aria-expanded={openMenu === item}
-                aria-controls="mega-panel"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </ul>
+        </div>
 
         {/* ── Cart (decorative — no link, just simulates an e-commerce icon) ── */}
         <button
@@ -183,13 +192,42 @@ const Navbar = () => {
             text-secondary transition-colors hover:text-primary"
         >
           <ShoppingCart className="size-5" aria-hidden="true" />
-          <span className="absolute -top-1 -end-1 grid size-4 place-items-center rounded-full
-            bg-primary text-[10px] leading-none font-bold text-primary-content">
+          <span
+            dir="ltr"
+            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+            className="absolute -top-1 -end-1 flex size-4 items-center justify-center rounded-full
+              bg-primary text-[10px] leading-none text-primary-content"
+          >
             0
           </span>
         </button>
       </div>
     </div>
+
+      {/* ── Mobile / tablet hamburger dropdown (full width) ─────────────── */}
+      <ul
+        ref={mobileDropdownRef}
+        className={`fixed inset-x-0 z-40 space-y-1 rounded-b-3xl bg-white p-4 shadow-2xl shadow-black/20
+          transition-[opacity,transform,visibility] duration-200 ease-out xl:hidden
+          ${mobileOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"}`}
+        style={{ top: NAV_H }}
+      >
+        {navlinks.map((item) => (
+          <li key={item}>
+            <button
+              type="button"
+              className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-base
+                font-semibold text-secondary transition-colors hover:bg-primary/10 hover:text-primary
+                ${openMenu === item ? "bg-primary/10 text-primary" : ""}`}
+              onClick={() => toggleMenu(item)}
+              aria-expanded={openMenu === item}
+              aria-controls="mega-panel"
+            >
+              {item}
+            </button>
+          </li>
+        ))}
+      </ul>
 
       {/* Hover bridge: tiny invisible strip that covers the gap between the
           navbar bottom and the mega panel top so the cursor doesn't briefly

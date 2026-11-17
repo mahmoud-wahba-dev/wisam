@@ -167,7 +167,7 @@ const Footer = () => {
                     type="email"
                     required
                     placeholder="ادخل عنوان بريدك الإلكتروني"
-                    className="h-14 w-full rounded-full bg-white ps-6 pe-16 text-base text-secondary placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+                    className="h-14 w-full rounded-full bg-white ps-6 pe-16 text-base text-secondary placeholder:text-[11px] placeholder:text-slate-400 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
                   />
                   <button
                     type="submit"
