@@ -7,6 +7,7 @@ const QUARTERS = [
   { id: 1, label: "الربع الأول" },
   { id: 2, label: "الربع الثاني" },
   { id: 3, label: "الربع الثالث" },
+  { id: 4, label: "الربع الرابع" },
 ];
 
 const HappenNow = () => {
@@ -16,9 +17,19 @@ const HappenNow = () => {
   return (
     <section id="program" className="bg-accent py-16">
       <div className="container">
+        {/* Current programs */}
         <div data-aos="fade-up" className="mb-10 flex items-center justify-between">
           <h2 className="text-5xl font-bold text-white">يحدث الآن</h2>
           <Link to="/programs" className="btn btn-primary">اكتشف البرامج</Link>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="100">
+          <HappenNowSlider items={programs} />
+        </div>
+
+        {/* Achievements by quarter */}
+        <div data-aos="fade-up" className="mt-20 mb-10  pt-16">
+          <h2 className="text-5xl font-bold text-white">منجزاتنا</h2>
         </div>
 
         <div data-aos="fade-up" data-aos-delay="100" className="mb-10">
