@@ -19,7 +19,7 @@ const paths = [
     description:
       "شارك بوقتك وخبرتك في برامج الجمعية ومبادراتها، وكن جزءاً من فريق يصنع الأثر.",
     icon: Users,
-    href: "mailto:volunteer@wisam.org.sa",
+    to: "/join-us/volunteer",
     cta: "تطوّع معنا",
   },
   {
@@ -28,8 +28,8 @@ const paths = [
     description:
       "اطّلع على الفرص الوظيفية المتاحة وابحث عن مسار مهني يحمل معنى.",
     icon: Briefcase,
-    href: "mailto:careers@wisam.org.sa",
-    cta: "أرسل سيرتك",
+    to: "/join-us/careers",
+    cta: "الوظائف المتاحة",
   },
   {
     key: "partnership",

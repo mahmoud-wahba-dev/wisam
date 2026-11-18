@@ -1,68 +1,19 @@
-import { Link } from "react-router";
+﻿import { Link } from "react-router";
 import { navSections } from "@/data/siteNav";
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF, socialLinks } from "@/data/contact";
+import SocialIcon from "@/componets/ui/SocialIcon";
 
 const mediaSection = navSections.find((section) => section.basePath === "/media-center");
 
 const openingHours = [
-  { day: "الأحد – الأربعاء", time: "9 صباحًا – 4 مساءً" },
+  { day: "الأحد – الأربعاء", time: "4 مساءً – 9 مساءً" },
+  
   { day: "الخميس – السبت", time: "مغلق", closed: true },
 ];
 
 // TODO: replace with the society's exact address or coordinates.
 const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
 
-const socials = [
-  {
-    name: "فيسبوك",
-    icon: (
-      <path d="M13.5 9.5H16V6.5h-2.5C11.6 6.5 10 8.1 10 10v1.5H8v3h2V21h3v-6.5h2.3l.5-3H13V10c0-.3.2-.5.5-.5Z" />
-    ),
-  },
-  {
-    name: "إنستغرام",
-    icon: (
-      <>
-        <rect
-          x="3"
-          y="3"
-          width="18"
-          height="18"
-          rx="5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.9"
-        />
-        <circle
-          cx="12"
-          cy="12"
-          r="4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.9"
-        />
-        <circle cx="17.2" cy="6.8" r="1.2" />
-      </>
-    ),
-  },
-  {
-    name: "إكس",
-    icon: (
-      <path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.3L3 2h6.5l4.4 5.8L18.9 2Zm-1.1 18h1.7L7.5 3.8H5.7L17.8 20Z" />
-    ),
-  },
-  {
-    name: "يوتيوب",
-    icon: (
-      <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.9 4.8 12 4.8 12 4.8s-5.9 0-7.6.4a2.8 2.8 0 0 0-2 2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.8 2.8 0 0 0 2 2c1.7.4 7.6.4 7.6.4s5.9 0 7.6-.4a2.8 2.8 0 0 0 2-2C22 15.1 22 12 22 12s0-3.1-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z" />
-    ),
-  },
-  {
-    name: "لينكدإن",
-    icon: (
-      <path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.75V21h-4v-5.6c0-1.34-.03-3.06-1.9-3.06-1.9 0-2.2 1.45-2.2 2.96V21h-4V9Z" />
-    ),
-  },
-];
 
 const FooterLink = ({ to, children }) => (
   <li>
@@ -126,13 +77,27 @@ const Footer = () => {
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <dt className="text-white/75">هاتف:</dt>
                   <dd>
-                    {/* TODO: replace with the society's real phone number */}
                     <a
-                      href="tel:+966110000000"
+                      href={PHONE_HREF}
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      +966 11 000 0000
+                      {PHONE_DISPLAY}
+                    </a>
+                  </dd>
+                </div>
+
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <dt className="text-white/75">واتساب:</dt>
+                  <dd>
+                    <a
+                      href={WHATSAPP_HREF}
+                      target="_blank"
+                      rel="noreferrer"
+                      dir="ltr"
+                      className="inline-block text-white/85 transition-colors hover:text-amber-light"
+                    >
+                      {PHONE_DISPLAY}
                     </a>
                   </dd>
                 </div>
@@ -141,11 +106,11 @@ const Footer = () => {
                   <dt className="mb-1 text-white/75">خدمة العملاء:</dt>
                   <dd>
                     <a
-                      href="mailto:info@wisam.org.sa"
+                      href={`mailto:${CONTACT_EMAIL}`}
                       dir="ltr"
                       className="inline-block text-white/85 transition-colors hover:text-amber-light"
                     >
-                      info@wisam.org.sa
+                      {CONTACT_EMAIL}
                     </a>
                   </dd>
                 </div>
@@ -154,7 +119,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-10">
-            <div>
+            {/* <div>
               <h2 className="mb-6 text-lg font-bold sm:text-xl">اشترك في النشرة الإخبارية</h2>
 
               <form onSubmit={(e) => e.preventDefault()}>
@@ -211,21 +176,21 @@ const Footer = () => {
                 </a>{" "}
                 من موقع Google
               </p>
-            </div>
+            </div> */}
 
             <div>
               <h3 className="mb-5 text-lg font-bold sm:text-xl">تابعنا على وسائل التواصل الاجتماعي</h3>
               <ul className="flex items-center gap-2">
-                {socials.map((social) => (
-                  <li key={social.name}>
+                {socialLinks.map((social) => (
+                  <li key={social.id}>
                     <a
-                      href="#"
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label={social.name}
                       className="center size-11 rounded-full text-white/80 transition-colors duration-200 hover:bg-white/10 hover:text-amber-light focus-visible:bg-white/10 focus-visible:text-amber-light focus-visible:outline-none"
                     >
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="size-5" aria-hidden="true">
-                        {social.icon}
-                      </svg>
+                      <SocialIcon id={social.id} className="size-5" />
                     </a>
                   </li>
                 ))}

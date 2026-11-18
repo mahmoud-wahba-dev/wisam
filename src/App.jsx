@@ -14,6 +14,8 @@ import VisitUs from "@/pages/contact/VisitUs";
 import ShareFeedback from "@/pages/contact/ShareFeedback";
 import ContactUs from "@/pages/contact/ContactUs";
 import RateExperience from "@/pages/contact/RateExperience";
+import Volunteer from "@/pages/join/Volunteer";
+import Careers from "@/pages/join/Careers";
 import NotFound from "@/pages/not-found/NotFound";
 import { navSections } from "@/data/siteNav";
 
@@ -24,6 +26,8 @@ const specialPages = {
   feedback: ShareFeedback,
   "contact-us": ContactUs,
   "rate-experience": RateExperience,
+  volunteer: Volunteer,
+  careers: Careers,
 };
 
 // One index redirect + one page per megamenu entry, plus one more per nested

@@ -330,3 +330,18 @@
    regardless of Swiper's class/state timing. */
 
 
+
+/* Custom dropdown arrow so native <select> controls get the same inline padding
+   on both sides (the browser arrow otherwise hugs the end edge). RTL: the arrow
+   sits on the left, which is the inline end. */
+.select-field {
+  appearance: none;
+  padding-inline-end: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23063441' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 1.1rem;
+  background-position: left 1.1rem center;
+}
+[dir="ltr"] .select-field {
+  background-position: right 1.1rem center;
+}

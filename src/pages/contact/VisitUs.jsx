@@ -81,7 +81,7 @@ const VisitUs = () => {
               </Field>
 
               <Field label="سبب الزيارة" icon={MessageSquareText} className="sm:col-span-2">
-                <select name="reason" required defaultValue="" className={inputClass}>
+                <select name="reason" required defaultValue="" className={`select-field ${inputClass}`}>
                   <option value="" disabled>
                     اختر سبب الزيارة
                   </option>

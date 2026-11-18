@@ -232,7 +232,7 @@ const Navbar = () => {
 
           {/* ── Cart (decorative — no link, just simulates an e-commerce icon) ── */}
           <Link
-            to={"https://salla.com/"}
+            to={"https://store.wisam.org.sa/"}
             target="_blank"
             type="button"
             aria-label="السلة"

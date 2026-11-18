@@ -1,10 +1,16 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import SectionPage from "@/pages/section/SectionPage";
 
-// TODO: replace with the society's real email, WhatsApp number, phone and address.
-const CONTACT_EMAIL = "info@wisam.org.sa";
-const WHATSAPP_NUMBER = "966110000000";
-const PHONE_NUMBER = "+966 11 000 0000";
+import SocialIcon from "@/componets/ui/SocialIcon";
+import {
+  CONTACT_EMAIL,
+  PHONE_DISPLAY,
+  PHONE_HREF,
+  WHATSAPP_HREF,
+  socialLinks,
+} from "@/data/contact";
+
+// TODO: replace with the society's exact address or coordinates.
 const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
 
 const WhatsAppIcon = ({ className }) => (
@@ -22,14 +28,14 @@ const channels = [
   },
   {
     label: "الهاتف",
-    value: PHONE_NUMBER,
-    href: `tel:${PHONE_NUMBER.replace(/\s/g, "")}`,
+    value: PHONE_DISPLAY,
+    href: PHONE_HREF,
     icon: Phone,
   },
   {
     label: "واتساب",
-    value: `+${WHATSAPP_NUMBER}`,
-    href: `https://wa.me/${WHATSAPP_NUMBER}`,
+    value: PHONE_DISPLAY,
+    href: WHATSAPP_HREF,
     icon: WhatsAppIcon,
     iconClass: "bg-[#25D366]/10 text-[#25D366]",
   },
@@ -62,6 +68,25 @@ const ContactUs = () => (
           </span>
         </a>
       ))}
+
+      <div className="rounded-4xl bg-white p-6 text-secondary shadow-2xl shadow-black/20 sm:col-span-2 lg:col-span-3">
+        <span className="block text-sm font-semibold text-secondary/70">تابعنا على وسائل التواصل الاجتماعي</span>
+        <ul className="mt-4 flex flex-wrap gap-3">
+          {socialLinks.map(({ id, name, href }) => (
+            <li key={id}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white"
+              >
+                <SocialIcon id={id} className="size-5" />
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="rounded-4xl bg-white p-6 text-secondary shadow-2xl shadow-black/20 sm:col-span-2 lg:col-span-1">
         <span className="grid size-12 place-items-center rounded-full bg-primary/10 text-primary">

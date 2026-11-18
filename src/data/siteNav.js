@@ -38,7 +38,7 @@ export const navSections = [
       { label: "الافصاح", slug: "legal-documents" },
 
       { label: "الاستثمار", slug: "committees" },
-      { label: "القوائم الماليه", slug: "financial-statements" },
+      { label: "القوائم المالية", slug: "financial-statements" },
       { label: "المحاضر والتوصيات", slug: "minutes-and-recommendations" },
     ],
   },
@@ -90,8 +90,8 @@ export const navSections = [
     label: "انضم لفريقنا",
     basePath: "/join-us",
     pages: [
-      { label: "تطوع", slug: "volunteer" },
-      { label: "توظيف", slug: "careers" },
+      { label: "تطوع", slug: "volunteer", page: "volunteer" },
+      { label: "توظيف", slug: "careers", page: "careers" },
     ],
   },
 ];

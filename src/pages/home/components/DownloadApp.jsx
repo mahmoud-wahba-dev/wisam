@@ -3,7 +3,7 @@ import phoneFrame from "@/assets/imgs/iphone-arabic.svg";
 import { HERO_POSTER, HERO_VIDEO } from "@/data/heroVideo";
 
 // TODO: replace with the society's own Salla store link.
-const SALLA_STORE_URL = "https://salla.sa/";
+const SALLA_STORE_URL = "https://store.wisam.org.sa/";
 
 // Salla mark (Simple Icons).
 const SallaLogo = ({ className }) => (
