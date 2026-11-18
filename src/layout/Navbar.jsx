@@ -143,7 +143,7 @@ const Navbar = () => {
         transition-[translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
         ${
           scrolled && !revealed
-            ? "bg-[var(--color-navbar)]/90 border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
+            ? "navbar-gradient border-white/10 shadow-lg shadow-black/20 backdrop-blur-xl backdrop-saturate-150"
             : "border-transparent bg-transparent shadow-none backdrop-blur-none"
         }
         ${navVisible ? "translate-y-0" : "-translate-y-full"}`}

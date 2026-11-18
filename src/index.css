@@ -41,16 +41,17 @@
   /* Navigation bar — flat colour used while the page is scrolled */
   --color-navbar: #1d1c2e;
 
-  /* Reference-style grade laid over the hero:
-     solid at the top and bottom, translucent through the middle. */
+  /* Grade laid over the hero, built from the footer / brand-gradient colours
+     (#04252f → #063441 → #0d4a5a): solid at the top and bottom, translucent
+     through the middle so the footage reads. */
   --overlay-hero: linear-gradient(
     180deg,
-    #1d1c2e 0.03%,
-    rgba(29, 28, 46, 0.95) 11.34%,
-    rgba(29, 28, 46, 0.3) 31.75%,
-    rgba(29, 28, 46, 0.44) 77.32%,
-    rgba(29, 28, 46, 0.65) 86.6%,
-    #1d1c2e 100%
+    #04252f 0.03%,
+    rgba(4, 37, 47, 0.95) 11.34%,
+    rgba(6, 52, 65, 0.3) 31.75%,
+    rgba(6, 52, 65, 0.44) 77.32%,
+    rgba(13, 74, 90, 0.65) 86.6%,
+    #063441 100%
   );
 
   /* Brand navy — dark surfaces, headers, hero shell */
@@ -160,6 +161,17 @@
   /* Active tab styling */
   .tabs input:checked {
     @apply text-primary;
+  }
+
+  /* Scrolled navbar: the same navy → teal sweep as the footer / partners
+     section, slightly translucent so the blur behind it still reads. */
+  .navbar-gradient {
+    background-image: linear-gradient(
+      125deg,
+      rgba(4, 37, 47, 0.94) 0%,
+      rgba(6, 52, 65, 0.94) 55%,
+      rgba(13, 74, 90, 0.94) 100%
+    );
   }
 
   /* Brand backdrop: navy → teal with warm/cool glows, built from the palette */
