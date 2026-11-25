@@ -4,14 +4,12 @@ import SectionPage from "@/pages/section/SectionPage";
 import SocialIcon from "@/componets/ui/SocialIcon";
 import {
   CONTACT_EMAIL,
+  MAP_EMBED_SRC,
   PHONE_DISPLAY,
   PHONE_HREF,
   WHATSAPP_HREF,
   socialLinks,
 } from "@/data/contact";
-
-// TODO: replace with the society's exact address or coordinates.
-const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
 
 const WhatsAppIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -94,7 +92,7 @@ const ContactUs = () => (
         </span>
         <span className="mt-3 block text-sm font-semibold text-secondary/70">الموقع الجغرافي</span>
         <iframe
-          src={`https://www.google.com/maps?q=${MAP_QUERY}&output=embed`}
+          src={MAP_EMBED_SRC}
           title="موقع جمعية وسام على الخريطة"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

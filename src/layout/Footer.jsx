@@ -1,6 +1,6 @@
 ﻿import { Link } from "react-router";
 import { navSections } from "@/data/siteNav";
-import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF, socialLinks } from "@/data/contact";
+import { CONTACT_EMAIL, MAP_EMBED_SRC, MAP_LINK, PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF, socialLinks } from "@/data/contact";
 import SocialIcon from "@/componets/ui/SocialIcon";
 
 const mediaSection = navSections.find((section) => section.basePath === "/media-center");
@@ -10,9 +10,6 @@ const openingHours = [
   
   { day: "الخميس – السبت", time: "مغلق", closed: true },
 ];
-
-// TODO: replace with the society's exact address or coordinates.
-const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
 
 
 const FooterLink = ({ to, children }) => (
@@ -202,14 +199,14 @@ const Footer = () => {
           <div>
             <h3 className="mb-5 text-lg font-bold sm:text-xl">الموقع</h3>
             <iframe
-              src={`https://www.google.com/maps?q=${MAP_QUERY}&output=embed`}
+              src={MAP_EMBED_SRC}
               title="موقع جمعية وسام على الخريطة"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="h-56 w-full rounded-3xl border-0 bg-white/5"
             />
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`}
+              href={MAP_LINK}
               target="_blank"
               rel="noreferrer"
               className="mt-3 inline-block text-sm text-white/75 transition-colors hover:text-amber-light"

@@ -9,9 +9,7 @@ import {
   MapPin,
 } from "lucide-react";
 import SectionPage from "@/pages/section/SectionPage";
-
-// TODO: replace with the society's exact address or coordinates.
-const MAP_QUERY = encodeURIComponent("جمعية وسام، المملكة العربية السعودية");
+import { ADDRESS_AR, MAP_EMBED_SRC, MAP_LINK } from "@/data/contact";
 
 const VISIT_REASONS = [
   "تعريف بالجمعية",
@@ -112,13 +110,10 @@ const VisitUs = () => {
             </span>
 
             <h2 className="mt-4 text-lg font-extrabold">موقع جمعية وسام</h2>
-            {/* TODO: replace with the society's exact address. */}
-            <p className="mt-2 text-sm leading-relaxed text-secondary/70">
-              المملكة العربية السعودية
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-secondary/70">{ADDRESS_AR}</p>
 
             <iframe
-              src={`https://www.google.com/maps?q=${MAP_QUERY}&output=embed`}
+              src={MAP_EMBED_SRC}
               title="موقع جمعية وسام على الخريطة"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -126,7 +121,7 @@ const VisitUs = () => {
             />
 
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`}
+              href={MAP_LINK}
               target="_blank"
               rel="noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"

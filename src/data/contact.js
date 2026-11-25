@@ -13,3 +13,10 @@ export const socialLinks = [
   { id: "youtube", name: "يوتيوب", href: "https://www.youtube.com/@Wisam_org" },
   { id: "tiktok", name: "تيك توك", href: "https://www.tiktok.com/@wisam_org" },
 ];
+
+// Location of the society's office (Google Maps place).
+export const ADDRESS_AR = "ممر عبد العزيز الشمري، العزيزية، الرياض 14512";
+export const MAP_PLACE_NAME = "جمعية وسام لتنمية الطفل";
+export const MAP_QUERY = encodeURIComponent(`${MAP_PLACE_NAME}، ${ADDRESS_AR}`);
+export const MAP_EMBED_SRC = `https://www.google.com/maps?q=${MAP_QUERY}&output=embed`;
+export const MAP_LINK = "https://maps.app.goo.gl/m27wcEtkgGunBjyD6?g_st=awb";
