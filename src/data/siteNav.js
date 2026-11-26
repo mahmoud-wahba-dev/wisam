@@ -11,16 +11,16 @@ export const navSections = [
         label: "الجمعية العمومية",
         slug: "general-assembly",
         children: [
-          { label: "الأعضاء", slug: "members", page: "assembly-members" },
-          { label: "المحاضر", slug: "minutes" },
+          { label: "أعضاء الجمعية العمومية", slug: "members", page: "assembly-members" },
+          { label: "محاضر الجمعية العمومية", slug: "minutes" },
         ],
       },
       {
         label: "مجلس الإدارة",
         slug: "board-of-directors",
         children: [
-          { label: "الأعضاء", slug: "members", page: "board-members" },
-          { label: "المحاضر", slug: "minutes" },
+          { label: "أعضاء مجلس الإدارة", slug: "members", page: "board-members" },
+          { label: "محاضر مجلس الإدارة", slug: "minutes" },
           { label: "القرارات", slug: "resolutions" },
         ],
       },
