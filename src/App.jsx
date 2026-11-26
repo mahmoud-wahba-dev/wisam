@@ -17,10 +17,16 @@ import RateExperience from "@/pages/contact/RateExperience";
 import Volunteer from "@/pages/join/Volunteer";
 import Careers from "@/pages/join/Careers";
 import NotFound from "@/pages/not-found/NotFound";
+import Story from "@/pages/about/Story";
+import AssemblyMembers from "@/pages/about/AssemblyMembers";
+import BoardMembers from "@/pages/about/BoardMembers";
 import { navSections } from "@/data/siteNav";
 
 // Megamenu entries that have a richer page than the shared placeholder.
 const specialPages = {
+  story: Story,
+  "assembly-members": AssemblyMembers,
+  "board-members": BoardMembers,
   news: NewsPage,
   visit: VisitUs,
   feedback: ShareFeedback,
@@ -30,29 +36,39 @@ const specialPages = {
   careers: Careers,
 };
 
+const pageElement = (page, fallback) => {
+  const Special = page ? specialPages[page] : null;
+  return Special ? <Special /> : <SectionPage {...fallback} />;
+};
+
 // One index redirect + one page per megamenu entry, plus one more per nested
 // (hover sub-column) entry, so every link in the navbar — top-level or
-// nested — always resolves to a real, recognizable page.
+// nested — always resolves to a real, recognizable page. An entry with
+// children has no page of its own and redirects to its first child.
 const navRoutes = navSections.flatMap(({ label: section, basePath, pages }) => [
   {
     path: basePath,
     element: <Navigate to={`${basePath}/${pages[0].slug}`} replace />,
   },
   ...pages.flatMap(({ label, slug, page, children }) => {
-    const Special = page ? specialPages[page] : null;
+    const path = `${basePath}/${slug}`;
 
     const route = {
-      path: `${basePath}/${slug}`,
-      element: Special ? (
-        <Special />
+      path,
+      element: children ? (
+        <Navigate to={`${path}/${children[0].slug}`} replace />
       ) : (
-        <SectionPage section={section} title={label} />
+        pageElement(page, { section, title: label })
       ),
     };
 
     const childRoutes = (children ?? []).map((child) => ({
-      path: `${basePath}/${slug}/${child.slug}`,
-      element: <SectionPage section={section} parent={label} title={child.label} />,
+      path: `${path}/${child.slug}`,
+      element: pageElement(child.page, {
+        section,
+        parent: label,
+        title: child.label,
+      }),
     }));
 
     return [route, ...childRoutes];

@@ -42,6 +42,10 @@ const navMenus = Object.fromEntries(
 // Height of the fixed navbar — keep in sync with the h-20 bar below
 const NAV_H = "5rem";
 
+// How long the pointer has to rest on another row before an open sub-list
+// changes, so a diagonal move towards it doesn't close it on the way.
+const SUB_SWITCH_DELAY = 200;
+
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -53,18 +57,43 @@ const Navbar = () => {
 
   const prevScrollY = useRef(0);
   const closeTimer = useRef(null);
+  const subTimer = useRef(null);
+  const pressPointer = useRef(null);
   const mobileNavRef = useRef(null);
   const mobileDropdownRef = useRef(null);
 
   const isOpen = openMenu !== null;
 
   // ── Helpers ────────────────────────────────────────────────────────────
+  const keepSub = () => clearTimeout(subTimer.current);
+
+  const showSub = (item) => {
+    keepSub();
+    setActiveSub(item?.children ? item : null);
+  };
+
+  const hoverSub = (event, item) => {
+    // A tap also emits pointerenter; taps are handled by the click instead.
+    if (event.pointerType !== "mouse") return;
+    keepSub();
+    if (!activeSub) showSub(item);
+    else subTimer.current = setTimeout(() => showSub(item), SUB_SWITCH_DELAY);
+  };
+
+  // A mouse click keeps the hovered sub-list open; touch and keyboard toggle it.
+  const pressParent = (item) => {
+    const byMouse = pressPointer.current === "mouse";
+    pressPointer.current = null;
+    const isShown = activeSub?.label === item.label;
+    showSub(!byMouse && isShown ? null : item);
+  };
+
   const openPanel = (item) => {
     clearTimeout(closeTimer.current);
     if (openMenu !== item) {
       setActiveMenu(item);
       setMenuKey((k) => k + 1);
-      setActiveSub(null);
+      showSub(null);
     }
     setOpenMenu(item);
   };
@@ -78,7 +107,7 @@ const Navbar = () => {
   const closeMenu = () => {
     clearTimeout(closeTimer.current);
     setOpenMenu(null);
-    setActiveSub(null);
+    showSub(null);
     setMobileOpen(false);
   };
 
@@ -88,7 +117,7 @@ const Navbar = () => {
     setActiveMenu(item);
     if (!closing) {
       setMenuKey((k) => k + 1);
-      setActiveSub(null);
+      showSub(null);
     }
     setOpenMenu(closing ? null : item);
     setMobileOpen(false);
@@ -174,6 +203,9 @@ const Navbar = () => {
                     type="button"
                     onMouseEnter={() => openPanel(item)}
                     onMouseLeave={scheduleClose}
+                    onClick={() => openPanel(item)}
+                    aria-expanded={openMenu === item}
+                    aria-controls="mega-panel"
                     className={`group relative flex flex-col items-center gap-2 whitespace-nowrap
                     px-2.5 py-1.5 text-xs font-semibold transition-colors duration-200
                     ${openMenu === item ? "text-primary" : "text-white hover:text-primary"}`}
@@ -352,59 +384,94 @@ const Navbar = () => {
                 </h2>
               </div>
 
-              {/* Top-level items — hovering one with children reveals the sub column */}
-              <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
+              {/* Top-level items. One with children opens its sub-list: in
+                  the next column on desktop, inline underneath on mobile. */}
+              <div className="relative lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
                 <ul className="space-y-4 sm:space-y-5">
-                  {navMenus[activeMenu].map((item, index) => (
-                    <li
-                      key={item.label}
-                      style={{ animationDelay: `${index * 45}ms` }}
-                      className="menu-item-in motion-reduce:animate-none"
-                      onMouseEnter={() => item.children && setActiveSub(item)}
-                    >
-                      <Link
-                        to={item.to}
-                        onClick={closeMenu}
-                        className={`flex items-center justify-between gap-2 text-base transition-colors
-                          hover:text-primary sm:text-lg
-                          ${activeSub?.label === item.label ? "text-primary" : "text-white/80"}`}
-                      >
-                        {item.label}
-                        {item.children?.length > 0 && (
-                          <ChevronLeft
-                            className="size-4 shrink-0 opacity-60"
-                            aria-hidden="true"
-                          />
+                  {navMenus[activeMenu].map((item, index) => {
+                    const expanded = activeSub?.label === item.label;
+                    // The entrance animation sits on the trigger, not the <li>:
+                    // a transform there would trap the absolute sub-list.
+                    const triggerProps = {
+                      style: { animationDelay: `${index * 45}ms` },
+                      className: `menu-item-in flex w-full items-center justify-between gap-2
+                        text-start text-base transition-colors hover:text-primary
+                        motion-reduce:animate-none sm:text-lg
+                        ${expanded ? "text-primary" : "text-white/80"}`,
+                      onPointerEnter: (e) => hoverSub(e, item),
+                    };
+
+                    return (
+                      <li key={item.label}>
+                        {item.children ? (
+                          <>
+                            <button
+                              type="button"
+                              {...triggerProps}
+                              aria-expanded={expanded}
+                              onPointerDown={(e) => {
+                                pressPointer.current = e.pointerType;
+                              }}
+                              onClick={() => pressParent(item)}
+                            >
+                              {item.label}
+                              <ChevronLeft
+                                className={`size-4 shrink-0 opacity-60 transition-transform duration-300
+                                  ${expanded ? "max-lg:-rotate-90" : ""}`}
+                                aria-hidden="true"
+                              />
+                            </button>
+
+                            {expanded && (
+                              // At lg, `top-0 start-full` places the list at
+                              // the head of the third column.
+                              <ul
+                                onPointerEnter={keepSub}
+                                className="mt-4 space-y-4 border-s border-primary/40 ps-5 sm:space-y-5
+                                  lg:absolute lg:start-full lg:top-0 lg:mt-0 lg:w-full lg:border-s-0 lg:ps-8"
+                              >
+                                {item.children.map((child, childIndex) => (
+                                  <li
+                                    key={child.label}
+                                    style={{
+                                      animationDelay: `${childIndex * 45}ms`,
+                                    }}
+                                    className="menu-item-in motion-reduce:animate-none"
+                                  >
+                                    <Link
+                                      to={child.to}
+                                      onClick={closeMenu}
+                                      className="block text-base text-white/80 transition-colors
+                                        hover:text-primary sm:text-lg"
+                                    >
+                                      {child.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </>
+                        ) : (
+                          <Link
+                            to={item.to}
+                            {...triggerProps}
+                            onFocus={() => showSub(null)}
+                            onClick={closeMenu}
+                          >
+                            {item.label}
+                          </Link>
                         )}
-                      </Link>
-                    </li>
-                  ))}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 
-              {/* Sub-items for whichever top-level item is active */}
-              <div className="lg:col-span-1 lg:border-e lg:border-white/10 lg:ps-8">
-                {activeSub?.children?.length > 0 && (
-                  <ul key={activeSub.label} className="space-y-4 sm:space-y-5">
-                    {activeSub.children.map((child, index) => (
-                      <li
-                        key={child.label}
-                        style={{ animationDelay: `${index * 45}ms` }}
-                        className="menu-item-in motion-reduce:animate-none"
-                      >
-                        <Link
-                          to={child.to}
-                          onClick={closeMenu}
-                          className="text-base text-white/80 transition-colors hover:text-primary sm:text-lg"
-                        >
-                          {child.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
+              {/* Empty columns: the third one hosts the desktop sub-list. */}
+              <div
+                className="hidden lg:col-span-1 lg:block lg:border-e lg:border-white/10"
+                aria-hidden="true"
+              />
               <div
                 className="hidden lg:col-span-1 lg:block"
                 aria-hidden="true"

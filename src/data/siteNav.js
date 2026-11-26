@@ -6,12 +6,12 @@ export const navSections = [
     label: "عن وسام",
     basePath: "/about-wisam",
     pages: [
-      { label: "من نحن (قصة وسام)", slug: "story" }, //
+      { label: "من نحن (قصة وسام)", slug: "story", page: "story" },
       {
         label: "الجمعية العمومية",
         slug: "general-assembly",
         children: [
-          { label: "الأعضاء", slug: "members" },
+          { label: "الأعضاء", slug: "members", page: "assembly-members" },
           { label: "المحاضر", slug: "minutes" },
         ],
       },
@@ -19,7 +19,7 @@ export const navSections = [
         label: "مجلس الإدارة",
         slug: "board-of-directors",
         children: [
-          { label: "الأعضاء", slug: "members" },
+          { label: "الأعضاء", slug: "members", page: "board-members" },
           { label: "المحاضر", slug: "minutes" },
           { label: "القرارات", slug: "resolutions" },
         ],

@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { FileText, Mail } from "lucide-react";
+import Breadcrumbs from "@/componets/ui/Breadcrumbs";
 
 /* Fallback body so a page that has no content yet never looks broken. */
 const EmptyState = ({ title }) => (
@@ -36,32 +37,10 @@ const EmptyState = ({ title }) => (
  * an optional intro. Pages pass their own content as children.
  */
 const SectionPage = ({ section, parent, title, intro, children }) => {
-  const crumbs = [section, parent, title].filter(
-    (crumb, index, all) => crumb && all.indexOf(crumb) === index
-  );
-
   return (
     <section className="brand-gradient min-h-[70vh] pt-36 pb-20 text-white sm:pt-44">
       <div className="container">
-        <nav aria-label="مسار التصفح" className="text-sm text-white/60">
-          <Link to="/" className="transition-colors hover:text-primary">
-            الرئيسية
-          </Link>
-          {crumbs.map((crumb, index) => {
-            const isLast = index === crumbs.length - 1;
-
-            return (
-              <span key={crumb}>
-                <span aria-hidden="true" className="mx-2">
-                  /
-                </span>
-                <span className={isLast ? "text-white" : undefined}>
-                  {crumb}
-                </span>
-              </span>
-            );
-          })}
-        </nav>
+        <Breadcrumbs items={[section, parent, title]} />
 
         <h1 className="mt-6 text-4xl font-bold leading-tight sm:text-5xl">
           {title}
